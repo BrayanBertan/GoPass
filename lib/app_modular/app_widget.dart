@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -6,6 +7,12 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [const Locale('en'), const Locale('pt')],
       debugShowCheckedModeBanner: false,
       title: 'GoPass',
       theme: ThemeData(
