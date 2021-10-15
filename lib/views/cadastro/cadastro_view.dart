@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CadastroPage extends StatefulWidget {
   const CadastroPage({Key? key}) : super(key: key);
@@ -13,6 +18,27 @@ class CadastroPage extends StatefulWidget {
 class _CadastroPageState extends State<CadastroPage> {
   @override
   Widget build(BuildContext context) {
+    String _image = 'assets/images/avatar.png';
+    String generateRandomString(int len) {
+      var r = Random();
+      const _chars =
+          'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+      return List.generate(len, (index) => _chars[r.nextInt(_chars.length)])
+          .join();
+    }
+
+    void onImageSelected(File image) async {
+      final path = await getApplicationDocumentsDirectory();
+
+      final File newImage =
+          await image.copy('${path.path}/${generateRandomString(50)}.png');
+      print(_image);
+      setState(() {
+        _image = newImage.path;
+      });
+      print(_image);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(85, 218, 243, 1),
@@ -33,11 +59,15 @@ class _CadastroPageState extends State<CadastroPage> {
                 const SizedBox(
                   height: 25,
                 ),
-                CircleAvatar(
-                    backgroundImage:
-                        ExactAssetImage('assets/images/avatar.png'),
-                    minRadius: 75,
-                    maxRadius: 100),
+                GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) => ImageOptionsSheet(onImageSelected)),
+                  child: CircleAvatar(
+                      backgroundImage: ExactAssetImage(_image),
+                      minRadius: 75,
+                      maxRadius: 100),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
