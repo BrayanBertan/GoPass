@@ -8,7 +8,20 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GoPass',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+          primarySwatch: MaterialColor(0xFF5EDAF3, {
+            50: Color(0xFF5EDAF3),
+            100: Color(0xFF5EDAF3),
+            200: Color(0xFF5EDAF3),
+            300: Color(0xFF5EDAF3),
+            400: Color(0xFF5EDAF3),
+            500: Color(0xFF5EDAF3),
+            600: Color(0xFF5EDAF3),
+            700: Color(0xFF5EDAF3),
+            800: Color(0xFF5EDAF3),
+            900: Color(0xFF5EDAF3),
+          }),
+          primaryColor: const Color.fromRGBO(85, 218, 243, 1)),
       builder: (context, widget) => ResponsiveWrapper.builder(
           ClampingScrollWrapper.builder(context, widget!),
           maxWidth: 1200,
