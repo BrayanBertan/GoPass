@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CadastroPage extends StatefulWidget {
   const CadastroPage({Key? key}) : super(key: key);
@@ -18,25 +16,16 @@ class CadastroPage extends StatefulWidget {
 class _CadastroPageState extends State<CadastroPage> {
   @override
   Widget build(BuildContext context) {
-    String _image = 'assets/images/avatar.png';
-    String generateRandomString(int len) {
-      var r = Random();
-      const _chars =
-          'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-      return List.generate(len, (index) => _chars[r.nextInt(_chars.length)])
-          .join();
-    }
+    File? _image;
 
     void onImageSelected(File image) async {
-      final path = await getApplicationDocumentsDirectory();
+      Modular.to.pop();
+      File tmpFile = File(image.path);
 
-      final File newImage =
-          await image.copy('${path.path}/${generateRandomString(50)}.png');
-      print(_image);
       setState(() {
-        _image = newImage.path;
+        _image = tmpFile;
+        print(_image);
       });
-      print(_image);
     }
 
     return Scaffold(
@@ -63,10 +52,18 @@ class _CadastroPageState extends State<CadastroPage> {
                   onTap: () => showModalBottomSheet(
                       context: context,
                       builder: (context) => ImageOptionsSheet(onImageSelected)),
-                  child: CircleAvatar(
-                      backgroundImage: ExactAssetImage(_image),
-                      minRadius: 75,
-                      maxRadius: 100),
+                  child: Container(
+                      width: 180.0,
+                      height: 180.0,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: _image != null
+                                  ? FileImage(File(
+                                          '/data/user/0/br.com.brayanbertan.gopass_app/cache/image_cropper_1634337794467.jpg'))
+                                      as ImageProvider
+                                  : FileImage(File(
+                                      '/data/user/0/br.com.brayanbertan.gopass_app/cache/image_cropper_1634337794467.jpg'))))),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
