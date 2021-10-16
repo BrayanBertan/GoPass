@@ -1,4 +1,7 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/helpers/extensions.dart';
+import 'package:gopass_app/models/usuario_model.dart';
+import 'package:gopass_app/repositories/usuario_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
@@ -7,6 +10,7 @@ part 'signup_store.g.dart';
 class SignupStore = _SignupStore with _$SignupStore;
 
 abstract class _SignupStore with Store {
+  final usuarioRepository = Modular.get<UsuarioRepository>();
   @observable
   String? nome;
 
@@ -57,9 +61,21 @@ abstract class _SignupStore with Store {
 
   @action
   Future<void> signUp() async {
-    loading = true;
-    Future.delayed(Duration(milliseconds: 500))
-        .then((value) => loading = false);
+    try {
+      loading = true;
+      var retorno = await usuarioRepository.saveUsuario(Usuario(
+          nome: nome,
+          email: email,
+          senha: senha,
+          cpf: cpf,
+          foto: foto,
+          nascimento: nascimento));
+      loading = false;
+      print(retorno.toString());
+      print(retorno.id);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @computed

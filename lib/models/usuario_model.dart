@@ -27,8 +27,8 @@ class Usuario {
     nascimento = DateTime.fromMillisecondsSinceEpoch(map['nascimento'] * 1000);
   }
 
-  Map toMap() {
-    Map<String, dynamic> map = {
+  Map<String, Object?> toMap() {
+    Map<String, dynamic>? map = {
       'nome': nome,
       'email': email,
       'foto': foto,
