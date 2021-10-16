@@ -3,8 +3,12 @@ import 'dart:io';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
+
+final usuario = SignupStore();
 
 class CadastroPage extends StatefulWidget {
   const CadastroPage({Key? key}) : super(key: key);
@@ -21,11 +25,7 @@ class _CadastroPageState extends State<CadastroPage> {
     void onImageSelected(File image) async {
       Modular.to.pop();
       File tmpFile = File(image.path);
-
-      setState(() {
-        _image = tmpFile;
-        print(_image);
-      });
+      usuario.foto = tmpFile.path;
     }
 
     return Scaffold(
@@ -48,23 +48,21 @@ class _CadastroPageState extends State<CadastroPage> {
                 const SizedBox(
                   height: 25,
                 ),
-                GestureDetector(
-                  onTap: () => showModalBottomSheet(
-                      context: context,
-                      builder: (context) => ImageOptionsSheet(onImageSelected)),
-                  child: Container(
-                      width: 180.0,
-                      height: 180.0,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: _image != null
-                                  ? FileImage(File(
-                                          '/data/user/0/br.com.brayanbertan.gopass_app/cache/image_cropper_1634337794467.jpg'))
-                                      as ImageProvider
-                                  : FileImage(File(
-                                      '/data/user/0/br.com.brayanbertan.gopass_app/cache/image_cropper_1634337794467.jpg'))))),
-                ),
+                Observer(builder: (_) {
+                  return GestureDetector(
+                    onTap: () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) =>
+                            ImageOptionsSheet(onImageSelected)),
+                    child: CircleAvatar(
+                        backgroundImage: usuario.foto != null
+                            ? FileImage(File(usuario.foto!))
+                            : ExactAssetImage('assets/images/avatar.png')
+                                as ImageProvider,
+                        minRadius: 75,
+                        maxRadius: 100),
+                  );
+                }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -94,99 +92,124 @@ class _CadastroPageState extends State<CadastroPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Nome Completo',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        onChanged: usuario.setNome,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Nome Completo',
+                          prefixIcon: Icon(Icons.person),
+                          isDense: true,
+                          errorText: usuario.nomeError,
+                        ),
+                      );
+                    }),
                     const SizedBox(
                       height: 10,
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: TextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              CpfInputFormatter(),
-                            ],
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Cpf',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.edit),
-                            ),
-                          ),
+                          child: Observer(builder: (_) {
+                            return TextField(
+                              onChanged: usuario.setCpf,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                CpfInputFormatter(),
+                              ],
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: InputDecoration(
+                                labelText: 'Cpf',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.edit),
+                                isDense: true,
+                                errorText: usuario.cpfError,
+                              ),
+                            );
+                          }),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        Expanded(
-                            child: GestureDetector(
-                          onTap: () async {
-                            final DateTime? selected = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2010),
-                              lastDate: DateTime(2025),
-                              locale: const Locale("pt"),
-                            );
-                          },
-                          child: Card(
-                            child: ListTile(
-                              title: Text(('23/06/1998')),
-                              leading:
-                                  Image.asset('assets/images/calendar.png'),
+                        Expanded(child: Observer(builder: (_) {
+                          return GestureDetector(
+                            onTap: () async {
+                              usuario.nascimento = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now()
+                                    .subtract(Duration(days: 6750)),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime.now()
+                                    .subtract(Duration(days: 6750)),
+                                locale: const Locale("pt"),
+                              );
+                            },
+                            child: Card(
+                              child: ListTile(
+                                title: Text(usuario.formatNascimento),
+                                leading:
+                                    Image.asset('assets/images/calendar.png'),
+                              ),
                             ),
-                          ),
-                        ))
+                          );
+                        }))
                       ],
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.email),
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: usuario.setEmail,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.email),
+                          isDense: true,
+                          errorText: usuario.emailError,
+                        ),
+                      );
+                    }),
                     const SizedBox(
                       height: 10,
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Senha',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.lock),
-                              suffixIcon: Icon(Icons.remove_red_eye),
-                            ),
-                          ),
+                          child: Observer(builder: (_) {
+                            return TextField(
+                              onChanged: usuario.setSenha,
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  labelText: 'Senha',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.lock),
+                                  suffixIcon: Icon(Icons.remove_red_eye),
+                                  isDense: true,
+                                  errorText: usuario.senhaError),
+                            );
+                          }),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Confirmar Senha',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.lock),
-                              suffixIcon: Icon(Icons.remove_red_eye),
-                            ),
-                          ),
+                          child: Observer(builder: (_) {
+                            return TextField(
+                              onChanged: usuario.setSenhaC,
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  labelText: 'Senha',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.lock),
+                                  suffixIcon: Icon(Icons.remove_red_eye),
+                                  isDense: true,
+                                  errorText: usuario.senhaCError),
+                            );
+                          }),
                         )
                       ],
                     )
@@ -202,17 +225,18 @@ class _CadastroPageState extends State<CadastroPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: MaterialButton(
-                    onPressed: () => print("Successul Login."),
-                    color: const Color.fromRGBO(85, 218, 243, 1),
-                    child: const Text(
-                      'Cadastrar',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                  child: Observer(builder: (_) {
+                    return ElevatedButton(
+                      onPressed: usuario.isFormValid ? usuario.signUp : null,
+                      child: const Text(
+                        'Cadastrar',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
                 const SizedBox(
                   height: 30,

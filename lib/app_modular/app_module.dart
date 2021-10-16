@@ -1,11 +1,14 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/views/cadastro/cadastro_view.dart';
 import 'package:gopass_app/views/login_view.dart';
 import 'package:gopass_app/views/splash_screen.dart';
 
 class AppModule extends Module {
   @override
-  List<Bind> get binds => [];
+  List<Bind> get binds => [
+        Bind((i) => SignupStore()),
+      ];
 
   @override
   List<ModularRoute> get routes => [
