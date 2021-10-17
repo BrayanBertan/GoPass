@@ -41,6 +41,7 @@ abstract class _LoginStore with Store {
       usuarioStore.setUser(retorno);
       isLoading = false;
     } catch (e) {
+      isLoading = false;
       print(e);
     }
   }
