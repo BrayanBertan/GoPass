@@ -8,7 +8,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
 
-final usuario = SignupStore();
+final signupStore = SignupStore();
 
 class CadastroPage extends StatefulWidget {
   const CadastroPage({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _CadastroPageState extends State<CadastroPage> {
     void onImageSelected(File image) async {
       Modular.to.pop();
       File tmpFile = File(image.path);
-      usuario.foto = tmpFile.path;
+      signupStore.foto = tmpFile.path;
     }
 
     return Scaffold(
@@ -55,8 +55,8 @@ class _CadastroPageState extends State<CadastroPage> {
                         builder: (context) =>
                             ImageOptionsSheet(onImageSelected)),
                     child: CircleAvatar(
-                        backgroundImage: usuario.foto != null
-                            ? FileImage(File(usuario.foto!))
+                        backgroundImage: signupStore.foto != null
+                            ? FileImage(File(signupStore.foto!))
                             : ExactAssetImage('assets/images/avatar.png')
                                 as ImageProvider,
                         minRadius: 75,
@@ -94,13 +94,13 @@ class _CadastroPageState extends State<CadastroPage> {
                   children: [
                     Observer(builder: (_) {
                       return TextField(
-                        onChanged: usuario.setNome,
+                        onChanged: signupStore.setNome,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Nome Completo',
                           prefixIcon: Icon(Icons.person),
                           isDense: true,
-                          errorText: usuario.nomeError,
+                          errorText: signupStore.nomeError,
                         ),
                       );
                     }),
@@ -112,7 +112,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         Expanded(
                           child: Observer(builder: (_) {
                             return TextField(
-                              onChanged: usuario.setCpf,
+                              onChanged: signupStore.setCpf,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 CpfInputFormatter(),
@@ -123,7 +123,7 @@ class _CadastroPageState extends State<CadastroPage> {
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(Icons.edit),
                                 isDense: true,
-                                errorText: usuario.cpfError,
+                                errorText: signupStore.cpfError,
                               ),
                             );
                           }),
@@ -134,19 +134,17 @@ class _CadastroPageState extends State<CadastroPage> {
                         Expanded(child: Observer(builder: (_) {
                           return GestureDetector(
                             onTap: () async {
-                              usuario.nascimento = await showDatePicker(
+                              signupStore.nascimento = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now()
-                                    .subtract(Duration(days: 6750)),
+                                initialDate: DateTime.now(),
                                 firstDate: DateTime(1900),
-                                lastDate: DateTime.now()
-                                    .subtract(Duration(days: 6750)),
+                                lastDate: DateTime.now(),
                                 locale: const Locale("pt"),
                               );
                             },
                             child: Card(
                               child: ListTile(
-                                title: Text(usuario.formatNascimento),
+                                title: Text(signupStore.formatNascimento),
                                 leading:
                                     Image.asset('assets/images/calendar.png'),
                               ),
@@ -161,13 +159,13 @@ class _CadastroPageState extends State<CadastroPage> {
                     Observer(builder: (_) {
                       return TextField(
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: usuario.setEmail,
+                        onChanged: signupStore.setEmail,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(Icons.email),
                           isDense: true,
-                          errorText: usuario.emailError,
+                          errorText: signupStore.emailError,
                         ),
                       );
                     }),
@@ -179,7 +177,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         Expanded(
                           child: Observer(builder: (_) {
                             return TextField(
-                              onChanged: usuario.setSenha,
+                              onChanged: signupStore.setSenha,
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
                               decoration: InputDecoration(
@@ -188,7 +186,7 @@ class _CadastroPageState extends State<CadastroPage> {
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.remove_red_eye),
                                   isDense: true,
-                                  errorText: usuario.senhaError),
+                                  errorText: signupStore.senhaError),
                             );
                           }),
                         ),
@@ -198,7 +196,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         Expanded(
                           child: Observer(builder: (_) {
                             return TextField(
-                              onChanged: usuario.setSenhaC,
+                              onChanged: signupStore.setSenhaC,
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
                               decoration: InputDecoration(
@@ -207,7 +205,7 @@ class _CadastroPageState extends State<CadastroPage> {
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.remove_red_eye),
                                   isDense: true,
-                                  errorText: usuario.senhaCError),
+                                  errorText: signupStore.senhaCError),
                             );
                           }),
                         )
@@ -227,7 +225,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   ),
                   child: Observer(builder: (_) {
                     return ElevatedButton(
-                      onPressed: usuario.isFormValid ? usuario.signUp : null,
+                      onPressed:
+                          signupStore.isFormValid ? signupStore.signUp : null,
                       child: const Text(
                         'Cadastrar',
                         style: TextStyle(

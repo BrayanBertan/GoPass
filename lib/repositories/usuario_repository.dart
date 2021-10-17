@@ -12,12 +12,12 @@ class UsuarioRepository {
     return usuario;
   }
 
-  Future<Usuario?> getUsuario(int id) async {
+  Future<Usuario?> getUsuario(String email, String senha) async {
     Database dbUsuario = await br.db;
     List<Map> maps = await dbUsuario.query("usuarios",
         columns: ['id', 'nome', 'email', 'cpf', 'foto', 'nascimento', 'tipo'],
-        where: "id = ?",
-        whereArgs: [id]);
+        where: "email = ? AND senha = ?",
+        whereArgs: [email, senha]);
     if (maps.length > 0) {
       return Usuario.fromMap(maps.first);
     } else {

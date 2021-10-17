@@ -27,7 +27,7 @@ abstract class _SignupStore with Store {
   String? senhaC;
 
   @observable
-  DateTime? nascimento = DateTime.now().subtract(const Duration(days: 6750));
+  DateTime? nascimento = DateTime.now();
 
   @observable
   String? foto;
