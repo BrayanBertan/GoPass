@@ -58,6 +58,7 @@ mixin _$UsuarioStore on _UsuarioStore, Store {
       return super.setUser(value);
     } finally {
       _$_UsuarioStoreActionController.endAction(_$actionInfo);
+      Modular.to.pushReplacementNamed('/login');
     }
   }
 

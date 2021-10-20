@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/usuario_model.dart';
 import 'package:mobx/mobx.dart';
 
@@ -16,7 +17,6 @@ abstract class _UsuarioStore with Store {
   void setUser(Usuario? value) {
     usuario = value;
     foto = usuario!.foto;
-    print(usuario);
   }
 
   @computed

@@ -7,6 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
+import 'package:sqflite/utils/utils.dart';
 
 final signupStore = SignupStore();
 
@@ -30,7 +31,7 @@ class _CadastroPageState extends State<CadastroPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(85, 218, 243, 1),
+        backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),
@@ -41,12 +42,11 @@ class _CadastroPageState extends State<CadastroPage> {
                 const Text(
                   'Cadastro de usuário',
                   style: TextStyle(
-                      fontWeight: FontWeight.w900,
                       fontSize: 40.0,
-                      color: Color.fromRGBO(85, 218, 243, 1)),
+                      color: Color.fromRGBO(3, 155, 229, 1)),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 50,
                 ),
                 Observer(builder: (_) {
                   return GestureDetector(
@@ -80,7 +80,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       child: const Text(
                         'Entrar',
                         style:
-                            TextStyle(color: Color.fromRGBO(85, 218, 243, 1)),
+                            TextStyle(color: Color.fromRGBO(3, 155, 229, 1)),
                       ),
                     )
                   ],
@@ -200,7 +200,7 @@ class _CadastroPageState extends State<CadastroPage> {
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
                               decoration: InputDecoration(
-                                  labelText: 'Senha',
+                                  labelText: 'Confirmar',
                                   border: OutlineInputBorder(),
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.remove_red_eye),
@@ -214,14 +214,14 @@ class _CadastroPageState extends State<CadastroPage> {
                   ],
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 50,
                 ),
                 Container(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   width: double.infinity,
                   height: 60,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(0),
                   ),
                   child: Observer(builder: (_) {
                     return ElevatedButton(

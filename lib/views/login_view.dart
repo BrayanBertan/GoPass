@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(85, 218, 243, 1),
+           backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
         ),
         body: Stack(
           children: [
@@ -43,9 +43,11 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         'GoPass',
                         style: TextStyle(
-                            fontWeight: FontWeight.w900,
                             fontSize: 60.0,
-                            color: Color.fromRGBO(85, 218, 243, 1)),
+                            color: Color.fromRGBO(3, 155, 229, 1)),
+                      ),
+                      const SizedBox(
+                        height: 25,
                       ),
                       const CircleAvatar(
                           backgroundImage:
@@ -54,6 +56,28 @@ class _LoginPageState extends State<LoginPage> {
                           maxRadius: 100),
                       const SizedBox(
                         height: 25,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Não é cadastrado?',
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.5),
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Modular.to.pushReplacementNamed('/cadastro');
+                            },
+                            child: const Text(
+                              'Crie sua conta agora!',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(3, 155, 229, 1)),
+                            ),
+                          )
+                        ],
                       ),
                       Observer(builder: (_) {
                         return TextField(
@@ -82,38 +106,16 @@ class _LoginPageState extends State<LoginPage> {
                               errorText: loginStore.error),
                         );
                       }),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Não possui conta?',
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.5),
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Modular.to.pushReplacementNamed('/cadastro');
-                            },
-                            child: const Text(
-                              'Cadastrar',
-                              style: TextStyle(
-                                  color: Color.fromRGBO(85, 218, 243, 1)),
-                            ),
-                          )
-                        ],
-                      ),
                       const SizedBox(
-                        height: 15,
+                        height: 100,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
                             'assets/images/facebook.png',
-                            width: 50,
-                            height: 50,
+                            width: 30,
+                            height: 30,
                           ),
                           Image.asset(
                             'assets/images/instagram.png',
@@ -121,25 +123,21 @@ class _LoginPageState extends State<LoginPage> {
                             height: 50,
                           ),
                           Image.asset(
-                            'assets/images/twitter.png',
+                            'assets/images/linkedin.png',
                             width: 50,
                             height: 50,
                           ),
                         ],
                       ),
                       const SizedBox(
-                        height: 15,
-                      ),
-                      const Divider(
-                        color: Colors.black,
-                        height: 30,
+                        height: 50,
                       ),
                       Container(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         width: double.infinity,
                         height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
+                          borderRadius: BorderRadius.circular(0),
                         ),
                         child: Observer(builder: (_) {
                           return ElevatedButton(

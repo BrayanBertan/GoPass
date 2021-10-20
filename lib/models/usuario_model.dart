@@ -17,13 +17,13 @@ class Usuario {
       this.nascimento});
 
   Usuario.fromMap(Map map) {
-    id = map['id'];
-    nome = map['nome'];
-    foto = map['foto'];
-    cpf = map['cpf'];
+    id    = map['id'];
+    nome  = map['nome'];
+    foto  = map['foto'];
+    cpf   = map['cpf'];
     email = map['email'];
     senha = map['senha'];
-    tipo = map['tipo'];
+    tipo  = map['tipo'];
     nascimento = DateTime.fromMillisecondsSinceEpoch(map['nascimento'] * 1000);
   }
 

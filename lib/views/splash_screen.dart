@@ -38,16 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
         padding: EdgeInsets.all(25),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/tickets.png'),
-              const Text(
-                'GoPass',
-                style: TextStyle(
-                    fontSize: 75,
-                    color: Color.fromRGBO(85, 218, 243, 1),
-                    fontWeight: FontWeight.w500),
-              ),
+              Image.asset('assets/images/gopass-logo.png'),
               Image.asset('assets/images/loading.gif'),
             ],
           ),
