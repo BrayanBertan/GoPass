@@ -25,15 +25,6 @@ class _ListaEventosPageState extends State<ListaEventosPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Observer(builder: (_) {
-                return CircleAvatar(
-                    backgroundImage: usuarioStore.foto != null
-                        ? FileImage(File(usuarioStore.foto!))
-                        : ExactAssetImage('assets/images/avatar.png')
-                    as ImageProvider,
-                    minRadius: 75,
-                    maxRadius: 100);
-              }),
               Center(
                 child: Observer(builder: (_) {
                   return Text(
