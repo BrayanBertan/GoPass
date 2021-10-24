@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
 
     when((_) => usuarioStore.usuario != null, () {
-      Modular.to.pushReplacementNamed('/eventos');
+      Modular.to.pushReplacementNamed('/eventos-cadastro'); //todo: trocar para listagem
     });
   }
 

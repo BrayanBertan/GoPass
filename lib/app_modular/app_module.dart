@@ -6,7 +6,6 @@ import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:gopass_app/views/cadastro/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/cadastro_view.dart';
-import 'package:gopass_app/views/eventos/listagem_view.dart';
 import 'package:gopass_app/views/login_view.dart';
 import 'package:gopass_app/views/splash_screen.dart';
 
@@ -25,7 +24,6 @@ class AppModule extends Module {
         ChildRoute('/', child: (context, args) => SplashScreen()),
         ChildRoute('/login', child: (_, __) => LoginPage()),
         ChildRoute('/cadastro', child: (_, __) => CadastroPage()),
-        ChildRoute('/eventos', child: (_, __) => ListaEventosPage()),
         ChildRoute('/eventos-cadastro', child: (_, __) => EventoCadastroPage()),
       ];
 }
