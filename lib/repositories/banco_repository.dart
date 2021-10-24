@@ -36,6 +36,41 @@ class BancoRepository {
       await db.execute("CREATE TABLE categorias("
           "id INTEGER PRIMARY KEY,"
           "nome TEXT) ");
+      await db.execute("CREATE TABLE eventos("
+          "id INTEGER PRIMARY KEY,"
+          "categoria_id INTEGER FOREIGN KEY,"
+          "usuario_id INTEGER FOREIGN KEY,"
+          "nome TEXT,"
+          "descricao TEXT NULLABLE,"
+          "endereco TEXT,"
+          "data_evento INTEGER,"
+          "lotacao_minima INTEGER,"
+          "lotacao_maxima INTEGER,"
+          "valor float(25,10),"
+          "FOREIGN KEY (categoria_id) REFERENCES categorias(id),"
+          "FOREIGN KEY (usuario_id) REFERENCES usuarios(id))"
+      );
+      await db.execute("CREATE TABLE assentos("
+          "id INTEGER PRIMARY KEY,"
+          "evento_id INTEGER FOREIGN KEY,"
+          "usuario_id INTEGER FOREIGN KEY,"
+          "data_reserva INTEGER,"
+          "confirmada INTEGER,"
+          "modo_pagamento ENUM('PIX', 'CARTAO'),"
+          "FOREIGN KEY (evento_id) REFERENCES eventos(id),"
+          "FOREIGN KEY (usuario_id) REFERENCES usuarios(id)"
+      );
+      await db.execute("CREATE TABLE reservas("
+          "id INTEGER PRIMARY KEY,"
+          "evento_id INTEGER FOREIGN KEY,"
+          "usuario_id INTEGER FOREIGN KEY,"
+          "assento_id INTEGER FOREIGN KEY,"
+          "data_reserva INTEGER,"
+          "confirmada INTEGER,"
+          "modo_pagamento ENUM('PIX', 'CARTAO'),"
+          "FOREIGN KEY (evento_id) REFERENCES eventos(id),"
+          "FOREIGN KEY (assento_id) REFERENCES assentos(id)"
+      );
       await db.insert('categorias',
           Categoria(id: 1, nome: "Culturais e de entretenimento").toMap());
       await db.insert(
