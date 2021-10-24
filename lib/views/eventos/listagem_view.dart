@@ -7,14 +7,14 @@ import 'package:gopass_app/stores/usuario_store.dart';
 
 final usuarioStore = UsuarioStore();
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class ListaEventosPage extends StatefulWidget {
+  const ListaEventosPage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _ListaEventosPageState createState() => _ListaEventosPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ListaEventosPageState extends State<ListaEventosPage> {
   final usuarioStore = Modular.get<UsuarioStore>();
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundImage: usuarioStore.foto != null
                         ? FileImage(File(usuarioStore.foto!))
                         : ExactAssetImage('assets/images/avatar.png')
-                            as ImageProvider,
+                    as ImageProvider,
                     minRadius: 75,
                     maxRadius: 100);
               }),

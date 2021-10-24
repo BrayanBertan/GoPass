@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
 
     when((_) => usuarioStore.usuario != null, () {
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.pushReplacementNamed('/eventos');
     });
   }
 
