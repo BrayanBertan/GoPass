@@ -4,29 +4,21 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/signup_store.dart';
-import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
 
 final signupStore = SignupStore();
 
-class CadastroPage extends StatefulWidget {
-  const CadastroPage({Key? key}) : super(key: key);
+class EventoCadastroPage extends StatefulWidget {
+  const EventoCadastroPage({Key? key}) : super(key: key);
 
   @override
-  _CadastroPageState createState() => _CadastroPageState();
+  _EventoCadastroPageState createState() => _EventoCadastroPageState();
 }
 
-class _CadastroPageState extends State<CadastroPage> {
+class _EventoCadastroPageState extends State<EventoCadastroPage> {
   @override
   Widget build(BuildContext context) {
-    File? _image;
-
-    void onImageSelected(File image) async {
-      Modular.to.pop();
-      File tmpFile = File(image.path);
-      signupStore.foto = tmpFile.path;
-    }
+    String dropdownValue = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -39,50 +31,10 @@ class _CadastroPageState extends State<CadastroPage> {
             child: Column(
               children: [
                 const Text(
-                  'Cadastro de usuário',
+                  'Cadastro de eventos',
                   style: TextStyle(
                       fontSize: 40.0,
                       color: Color.fromRGBO(3, 155, 229, 1)),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Observer(builder: (_) {
-                  return GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                        context: context,
-                        builder: (context) =>
-                            ImageOptionsSheet(onImageSelected)),
-                    child: CircleAvatar(
-                        backgroundImage: signupStore.foto != null
-                            ? FileImage(File(signupStore.foto!))
-                            : ExactAssetImage('assets/images/avatar.png')
-                                as ImageProvider,
-                        minRadius: 75,
-                        maxRadius: 100),
-                  );
-                }),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Já possui conta?',
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.5),
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Modular.to.pushReplacementNamed('/login');
-                      },
-                      child: const Text(
-                        'Entrar',
-                        style:
-                            TextStyle(color: Color.fromRGBO(3, 155, 229, 1)),
-                      ),
-                    )
-                  ],
                 ),
                 const SizedBox(
                   height: 25,
@@ -92,15 +44,28 @@ class _CadastroPageState extends State<CadastroPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Observer(builder: (_) {
-                      return TextField(
-                        onChanged: signupStore.setNome,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Nome Completo',
-                          prefixIcon: Icon(Icons.person),
-                          isDense: true,
-                          errorText: signupStore.nomeError,
+                      return DropdownButton<String>(
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
                         ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['Cinema', 'Show', 'Teatro']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       );
                     }),
                     const SizedBox(
@@ -145,7 +110,7 @@ class _CadastroPageState extends State<CadastroPage> {
                               child: ListTile(
                                 title: Text(signupStore.formatNascimento),
                                 leading:
-                                    Image.asset('assets/images/calendar.png'),
+                                Image.asset('assets/images/calendar.png'),
                               ),
                             ),
                           );
@@ -225,7 +190,7 @@ class _CadastroPageState extends State<CadastroPage> {
                   child: Observer(builder: (_) {
                     return ElevatedButton(
                       onPressed:
-                          signupStore.isFormValid ? signupStore.signUp : null,
+                      signupStore.isFormValid ? signupStore.signUp : null,
                       child: const Text(
                         'Cadastrar',
                         style: TextStyle(
