@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:gopass_app/models/categoria_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -32,6 +33,19 @@ class BancoRepository {
           "foto TEXT,"
           "tipo TEXT,"
           "nascimento INTEGER) ");
+      await db.execute("CREATE TABLE categorias("
+          "id INTEGER PRIMARY KEY,"
+          "nome TEXT) ");
+      await db.insert('categorias',
+          Categoria(id: 1, nome: "Culturais e de entretenimento").toMap());
+      await db.insert(
+          'categorias', Categoria(id: 2, nome: "Esportivos").toMap());
+      await db.insert(
+          'categorias', Categoria(id: 3, nome: "Corporativos").toMap());
+      await db.insert(
+          'categorias', Categoria(id: 4, nome: "Religiosos").toMap());
+      await db.insert('categorias',
+          Categoria(id: 5, nome: "Acadêmicos e educacionais").toMap());
     });
   }
 }

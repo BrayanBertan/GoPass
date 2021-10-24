@@ -118,7 +118,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
             Observer(builder: (_) {
               return MultiSelectDialogField(
                 title: Text('Categorias'),
-                buttonText: Text('Categorias'),
+                buttonText: Text('Eventos'),
                 items: [],
                 listType: MultiSelectListType.CHIP,
                 onConfirm: (values) {},
