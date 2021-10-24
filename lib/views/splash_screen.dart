@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   startTimeout() {
-    return Timer(Duration(seconds: 5), changeScreen);
+    return Timer(Duration(seconds: 3), changeScreen);
   }
 
   changeScreen() async {
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   inicializaBanco() async {
     final bh = Modular.get<BancoRepository>();
     await bh.db;
-    changeScreen();
+    startTimeout();
   }
 
   @override
