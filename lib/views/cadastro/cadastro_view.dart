@@ -41,8 +41,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 const Text(
                   'Cadastro de usuário',
                   style: TextStyle(
-                      fontSize: 40.0,
-                      color: Color.fromRGBO(3, 155, 229, 1)),
+                      fontSize: 40.0, color: Color.fromRGBO(3, 155, 229, 1)),
                 ),
                 const SizedBox(
                   height: 50,
@@ -78,8 +77,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       },
                       child: const Text(
                         'Entrar',
-                        style:
-                            TextStyle(color: Color.fromRGBO(3, 155, 229, 1)),
+                        style: TextStyle(color: Color.fromRGBO(3, 155, 229, 1)),
                       ),
                     )
                   ],
@@ -224,8 +222,12 @@ class _CadastroPageState extends State<CadastroPage> {
                   ),
                   child: Observer(builder: (_) {
                     return ElevatedButton(
-                      onPressed:
-                          signupStore.isFormValid ? signupStore.signUp : null,
+                      onPressed: signupStore.isFormValid
+                          ? () async {
+                              signupStore.signUp().then((value) =>
+                                  Modular.to.pushReplacementNamed('/login'));
+                            }
+                          : null,
                       child: const Text(
                         'Cadastrar',
                         style: TextStyle(
