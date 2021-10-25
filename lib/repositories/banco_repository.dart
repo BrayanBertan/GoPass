@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:gopass_app/models/categoria_model.dart';
+import 'package:gopass_app/models/usuario_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -21,7 +22,7 @@ class BancoRepository {
 
   Future<Database> initDb() async {
     final dataBasesPath = await getDatabasesPath();
-    final path = join(dataBasesPath, "deeeefvf.db");
+    final path = join(dataBasesPath, "test5.db");
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
       await db.execute("CREATE TABLE usuarios("
@@ -69,6 +70,16 @@ class BancoRepository {
           'categorias', Categoria(id: 4, nome: "Religiosos").toMap());
       await db.insert('categorias',
           Categoria(id: 5, nome: "Acadêmicos e educacionais").toMap());
+      await db.insert(
+          'usuarios',
+          Usuario(
+                  nome: "admin",
+                  nascimento: DateTime.now().subtract(Duration(days: 7300)),
+                  foto: 'assets/images/admin.png',
+                  cpf: '11111111111',
+                  email: 'admin@admin.com',
+                  senha: '123456')
+              .toMap());
     });
   }
 }

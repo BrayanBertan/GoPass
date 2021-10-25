@@ -7,9 +7,9 @@ import 'package:gopass_app/stores/login_store.dart';
 import 'package:gopass_app/stores/signup_store.dart';
 import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:gopass_app/views/cadastro/cadastro_view.dart';
+import 'package:gopass_app/views/eventos/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/home.dart';
 import 'package:gopass_app/views/login_view.dart';
-import 'package:gopass_app/views/splash_screen.dart';
 
 class AppModule extends Module {
   @override
@@ -25,7 +25,7 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/', child: (context, args) => SplashScreen()),
+        ChildRoute('/', child: (context, args) => EventoCadastroPage()),
         ChildRoute('/login', child: (_, __) => LoginPage()),
         ChildRoute('/cadastro', child: (_, __) => CadastroPage()),
         ChildRoute('/home', child: (_, __) => HomePage()),
