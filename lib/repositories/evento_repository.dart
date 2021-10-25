@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/models/categoria_model.dart';
 import 'package:gopass_app/models/evento_model.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
 import 'package:sqflite/sqflite.dart';
@@ -14,8 +15,18 @@ class EventoRepository {
 
   Future<Evento?> getEvento(int id) async {
     Database dbEvento = await br.db;
-    List<Map> maps = await dbEvento.query("eventos",
-        columns: ['id', 'categoria_id', 'usuario_id', 'nome', 'descricao', 'endereco', 'data_evento', 'lotacao_minima', 'lotacao_maxima', 'valor']);
+    List<Map> maps = await dbEvento.query("eventos", columns: [
+      'id',
+      'categoria_id',
+      'usuario_id',
+      'nome',
+      'descricao',
+      'endereco',
+      'data_evento',
+      'lotacao_minima',
+      'lotacao_maxima',
+      'valor'
+    ]);
     if (maps.length > 0) {
       return Evento.fromMap(maps.first);
     } else {
@@ -26,8 +37,7 @@ class EventoRepository {
   Future<int> deleteEvento(int id) async {
     Database dbEvento = await br.db;
 
-    return await dbEvento
-        .delete("eventos", where: "$id = ?", whereArgs: [id]);
+    return await dbEvento.delete("eventos", where: "$id = ?", whereArgs: [id]);
   }
 
   Future<int> updateEvento(Evento evento) async {
@@ -45,6 +55,16 @@ class EventoRepository {
       listEvento.add(Evento.fromMap(m));
     }
     return listEvento;
+  }
+
+  Future<List<Categoria>> getAllCategorias() async {
+    Database dbEvento = await br.db;
+    List<Map> maps = await dbEvento.rawQuery("SELECT * FROM categorias");
+    List<Categoria> listCategoria = [];
+    for (Map m in maps) {
+      listCategoria.add(Categoria.fromMap(m));
+    }
+    return listCategoria;
   }
 
   Future close() async {

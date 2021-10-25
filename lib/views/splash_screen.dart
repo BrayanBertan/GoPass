@@ -15,12 +15,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   changeScreen() async {
-    Modular.to.pushReplacementNamed('/login');
+    Modular.to.pushReplacementNamed('/home');
   }
 
   inicializaBanco() async {
-    final bh = Modular.get<BancoRepository>();
-    await bh.db;
+    final br = Modular.get<BancoRepository>();
+    await br.db;
     startTimeout();
   }
 

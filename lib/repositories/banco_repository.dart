@@ -21,7 +21,7 @@ class BancoRepository {
 
   Future<Database> initDb() async {
     final dataBasesPath = await getDatabasesPath();
-    final path = join(dataBasesPath, "tewfesf.db");
+    final path = join(dataBasesPath, "deeeefvf.db");
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
       await db.execute("CREATE TABLE usuarios("
@@ -38,39 +38,27 @@ class BancoRepository {
           "nome TEXT) ");
       await db.execute("CREATE TABLE eventos("
           "id INTEGER PRIMARY KEY,"
-          "categoria_id INTEGER FOREIGN KEY,"
-          "usuario_id INTEGER FOREIGN KEY,"
+          "categoria_id INTEGER,"
+          "usuario_id INTEGER,"
           "nome TEXT,"
           "descricao TEXT NULLABLE,"
           "endereco TEXT,"
           "data_evento INTEGER,"
           "lotacao_minima INTEGER,"
           "lotacao_maxima INTEGER,"
-          "valor float(25,10),"
-          "FOREIGN KEY (categoria_id) REFERENCES categorias(id),"
-          "FOREIGN KEY (usuario_id) REFERENCES usuarios(id))"
-      );
+          "valor float(25,10))");
       await db.execute("CREATE TABLE assentos("
           "id INTEGER PRIMARY KEY,"
-          "evento_id INTEGER FOREIGN KEY,"
-          "usuario_id INTEGER FOREIGN KEY,"
-          "data_reserva INTEGER,"
-          "confirmada INTEGER,"
-          "modo_pagamento ENUM('PIX', 'CARTAO'),"
-          "FOREIGN KEY (evento_id) REFERENCES eventos(id),"
-          "FOREIGN KEY (usuario_id) REFERENCES usuarios(id)"
-      );
+          "reserva_id INTEGER,"
+          "numero INTEGER)");
       await db.execute("CREATE TABLE reservas("
           "id INTEGER PRIMARY KEY,"
-          "evento_id INTEGER FOREIGN KEY,"
-          "usuario_id INTEGER FOREIGN KEY,"
-          "assento_id INTEGER FOREIGN KEY,"
+          "evento_id INTEGER,"
+          "usuario_id INTEGER,"
+          "assento_id INTEGER,"
           "data_reserva INTEGER,"
           "confirmada INTEGER,"
-          "modo_pagamento ENUM('PIX', 'CARTAO'),"
-          "FOREIGN KEY (evento_id) REFERENCES eventos(id),"
-          "FOREIGN KEY (assento_id) REFERENCES assentos(id)"
-      );
+          "modo_pagamento TEXT)");
       await db.insert('categorias',
           Categoria(id: 1, nome: "Culturais e de entretenimento").toMap());
       await db.insert(

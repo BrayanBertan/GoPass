@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/models/categoria_model.dart';
+import 'package:gopass_app/stores/filter_store.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class DialogFiltros extends StatefulWidget {
@@ -11,6 +13,14 @@ class DialogFiltros extends StatefulWidget {
 }
 
 class _DialogFiltrosState extends State<DialogFiltros> {
+  FilterStore filterStore = Modular.get<FilterStore>().clone();
+
+  @override
+  void initState() {
+    filterStore.getAllCategorias();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -39,11 +49,13 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                       fontWeight: FontWeight.w400),
                 ),
                 title: Slider(
-                  value: 5,
+                  value: filterStore.precoMax ?? 50,
                   min: 0,
                   max: 300,
-                  onChanged: (double value) {},
-                  label: 's',
+                  onChanged: (double value) {
+                    filterStore.setPrecoMax(value);
+                  },
+                  label: filterStore.precoMax?.toStringAsFixed(2) ?? '',
                   divisions: 50,
                   activeColor: Color.fromRGBO(203, 100, 100, 1),
                 ),
@@ -58,7 +70,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Text('23'),
+                    Text(filterStore.precoMax?.toStringAsFixed(2) ?? ''),
                   ],
                 ),
               );
@@ -71,18 +83,21 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                 Expanded(child: Observer(builder: (_) {
                   return GestureDetector(
                     onTap: () async {
-                      var a = await showDatePicker(
+                      filterStore.dataInicial = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
+                        initialDate: DateTime.now().add(Duration(days: 1)),
+                        firstDate: DateTime.now().add(Duration(days: 1)),
+                        lastDate: DateTime.now().add(Duration(days: 60)),
                         locale: const Locale("pt"),
                       );
                     },
                     child: Card(
                       child: ListTile(
                         title: Wrap(
-                          children: [Text('Dt. Inicial'), Text('23/06/1998')],
+                          children: [
+                            Text('Dt. Inicial'),
+                            Text(filterStore.formatInicial)
+                          ],
                         ),
                         leading: Image.asset('assets/images/calendar.png'),
                       ),
@@ -92,18 +107,22 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                 Expanded(child: Observer(builder: (_) {
                   return GestureDetector(
                     onTap: () async {
-                      var a = await showDatePicker(
+                      filterStore.dataFinal = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
+                        initialDate: filterStore.dataInicial!,
+                        firstDate: filterStore.dataInicial!,
+                        lastDate:
+                            filterStore.dataInicial!.add(Duration(days: 60)),
                         locale: const Locale("pt"),
                       );
                     },
                     child: Card(
                       child: ListTile(
                         title: Wrap(
-                          children: [Text('Dt. Final'), Text('23/06/1998')],
+                          children: [
+                            Text('Dt. Final'),
+                            Text(filterStore.formatFinal)
+                          ],
                         ),
                         leading: Image.asset('assets/images/calendar.png'),
                       ),
@@ -117,11 +136,15 @@ class _DialogFiltrosState extends State<DialogFiltros> {
             ),
             Observer(builder: (_) {
               return MultiSelectDialogField(
+                initialValue: filterStore.categoriasSelecionadasList,
+                onConfirm: (itens) => filterStore.setSelecionados,
                 title: Text('Categorias'),
                 buttonText: Text('Eventos'),
-                items: [],
+                items: filterStore.categoriasList!
+                    .map((categoria) =>
+                        MultiSelectItem<Categoria?>(categoria, categoria.nome!))
+                    .toList(),
                 listType: MultiSelectListType.CHIP,
-                onConfirm: (values) {},
               );
             }),
             SizedBox(
