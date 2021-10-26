@@ -14,6 +14,7 @@ class _EventosGridState extends State<EventosGrid> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      physics: ScrollPhysics(),
       shrinkWrap: true,
       padding: EdgeInsets.all(10),
       itemCount: this.eventos.length ?? 0,

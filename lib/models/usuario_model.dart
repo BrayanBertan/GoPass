@@ -5,7 +5,7 @@ class Usuario {
   String? senha;
   String? foto;
   String? cpf;
-  String tipo = 'C';
+  String? tipo;
   DateTime? nascimento;
 
   Usuario(
@@ -14,16 +14,17 @@ class Usuario {
       this.senha,
       this.foto,
       this.cpf,
-      this.nascimento});
+      this.nascimento,
+      this.tipo = 'C'});
 
   Usuario.fromMap(Map map) {
-    id    = map['id'];
-    nome  = map['nome'];
-    foto  = map['foto'];
-    cpf   = map['cpf'];
+    id = map['id'];
+    nome = map['nome'];
+    foto = map['foto'];
+    cpf = map['cpf'];
     email = map['email'];
     senha = map['senha'];
-    tipo  = map['tipo'];
+    tipo = map['tipo'];
     nascimento = DateTime.fromMillisecondsSinceEpoch(map['nascimento'] * 1000);
   }
 

@@ -72,6 +72,21 @@ mixin _$EventoStore on _EventoStore, Store {
               name: '_EventoStore.isFormValid'))
           .value;
 
+  final _$abaIndexAtom = Atom(name: '_EventoStore.abaIndex');
+
+  @override
+  int get abaIndex {
+    _$abaIndexAtom.reportRead();
+    return super.abaIndex;
+  }
+
+  @override
+  set abaIndex(int value) {
+    _$abaIndexAtom.reportWrite(value, super.abaIndex, () {
+      super.abaIndex = value;
+    });
+  }
+
   final _$searchAtom = Atom(name: '_EventoStore.search');
 
   @override
@@ -275,13 +290,6 @@ mixin _$EventoStore on _EventoStore, Store {
     return _$getAllCategoriasAsyncAction.run(() => super.getAllCategorias());
   }
 
-  final _$getAllEventosAsyncAction = AsyncAction('_EventoStore.getAllEventos');
-
-  @override
-  Future getAllEventos() {
-    return _$getAllEventosAsyncAction.run(() => super.getAllEventos());
-  }
-
   final _$cadastroAsyncAction = AsyncAction('_EventoStore.cadastro');
 
   @override
@@ -290,6 +298,17 @@ mixin _$EventoStore on _EventoStore, Store {
   }
 
   final _$_EventoStoreActionController = ActionController(name: '_EventoStore');
+
+  @override
+  void setAbaIndex(int value) {
+    final _$actionInfo = _$_EventoStoreActionController.startAction(
+        name: '_EventoStore.setAbaIndex');
+    try {
+      return super.setAbaIndex(value);
+    } finally {
+      _$_EventoStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setSearch(String value) {
@@ -415,6 +434,7 @@ mixin _$EventoStore on _EventoStore, Store {
   @override
   String toString() {
     return '''
+abaIndex: ${abaIndex},
 search: ${search},
 filter: ${filter},
 nome: ${nome},

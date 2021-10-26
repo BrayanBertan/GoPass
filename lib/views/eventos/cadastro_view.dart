@@ -9,7 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
 
-final eventoStore = EventoStore();
+final eventoStore = Modular.get<EventoStore>();
 
 class EventoCadastroPage extends StatefulWidget {
   const EventoCadastroPage({Key? key}) : super(key: key);
@@ -36,9 +36,6 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15),
         child: Column(
@@ -97,13 +94,12 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                           onPressed: () {
                             DatePicker.showDateTimePicker(context,
                                 showTitleActions: true,
-                                minTime:
-                                    DateTime.now().subtract(Duration(days: 1)),
+                                minTime: DateTime.now().add(Duration(days: 15)),
                                 onConfirm: (date) {
                               eventoStore.setData(date);
                             },
-                                currentTime:
-                                    eventoStore.dataEvento ?? DateTime.now(),
+                                currentTime: eventoStore.dataEvento ??
+                                    DateTime.now().add(Duration(days: 15)),
                                 locale: LocaleType.pt);
                           },
                           child: Column(
@@ -243,26 +239,10 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                 return ElevatedButton(
                   onPressed: eventoStore.isFormValid
                       ? () async {
-                          eventoStore.cadastro().then((value) => showDialog(
-                              context: context,
-                              builder: (_) {
-                                return Dialog(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(30),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Image.asset('assets/images/tick.png'),
-                                        Text(
-                                          'Evento salvo com sucesso',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 30),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }));
+                          eventoStore.cadastro().then((value) {
+                            eventoStore.setSearch('');
+                            eventoStore.setAbaIndex(0);
+                          });
                         }
                       : null,
                   child: const Text(

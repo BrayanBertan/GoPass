@@ -48,6 +48,7 @@ class _BarraFiltrosState extends State<BarraFiltros> {
                       'assets/images/search.png',
                     ),
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       eventoStore.setSearch(searchController.text);
                     }),
               ],

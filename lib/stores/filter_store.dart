@@ -21,7 +21,7 @@ abstract class _FilterStore with Store {
   void setDataFinal(DateTime value) => dataFinal = value;
 
   @observable
-  double? precoMax = 100;
+  double? precoMax = 500;
 
   @action
   void setPrecoMax(double value) => precoMax = value;
@@ -64,11 +64,16 @@ abstract class _FilterStore with Store {
   String get formatFinal => format.format(dataFinal ?? DateTime.now());
 
   void setFilter() {
-    Modular.get<EventoStore>().setFilter(this as FilterStore);
+    var filter = FilterStore(
+        precoMax: precoMax, dataInicial: dataInicial, dataFinal: dataFinal);
+    filter.categoriasSelecionadasList = this.categoriasSelecionadasList;
+    Modular.get<EventoStore>().setFilter(filter);
   }
 
   FilterStore clone() {
-    return FilterStore(
+    var filter = FilterStore(
         precoMax: precoMax, dataInicial: dataInicial, dataFinal: dataFinal);
+    filter.categoriasSelecionadasList = categoriasSelecionadasList;
+    return filter;
   }
 }

@@ -1,10 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gopass_app/stores/evento_store.dart';
 import 'package:intl/intl.dart';
-
-final eventoStore = EventoStore();
 
 class EventosGridItem extends StatefulWidget {
   var index;
@@ -14,12 +11,6 @@ class EventosGridItem extends StatefulWidget {
 }
 
 class _EventosGridItemState extends State<EventosGridItem> {
-  @override
-  void initState() {
-    eventoStore.getAllEventos();
-    super.initState();
-  }
-
   var index;
   _EventosGridItemState(this.index);
   var format = DateFormat('dd/MM/yyyy');
@@ -31,7 +22,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
         elevation: 8,
         child: Scaffold(
           bottomNavigationBar:
-              ElevatedButton(onPressed: () {}, child: Text('Comprar')),
+              ElevatedButton(onPressed: () {}, child: Text('Visualizar')),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,10 +34,10 @@ class _EventosGridItemState extends State<EventosGridItem> {
                           File(this.index?.foto),
                           fit: BoxFit.fill,
                           width: double.infinity,
-                          height: 125,
+                          height: 150,
                         )
                       : Image.asset(
-                          'assets/images/dance.png',
+                          'assets/images/gopass-logo.png',
                           fit: BoxFit.fill,
                           height: 125,
                         ),
@@ -55,7 +46,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
                     child: Container(
                       width: 100,
                       height: 50,
-                      decoration: new BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(5),
@@ -73,7 +64,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
               Text(
                 '${this.index.nome}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.bold),

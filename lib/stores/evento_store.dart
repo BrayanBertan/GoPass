@@ -21,6 +21,8 @@ abstract class _EventoStore with Store {
       try {
         final response = await eventosRepository.getAllEvento(search, filter);
         eventos!.addAll(response);
+
+        print('eventos $eventos');
       } catch (error) {
         print(error);
       }
@@ -38,6 +40,12 @@ abstract class _EventoStore with Store {
     preco = 0;
     dataEvento = DateTime.now().subtract(Duration(days: 1));
   }
+
+  @observable
+  int abaIndex = 0;
+
+  @action
+  void setAbaIndex(int value) => abaIndex = value;
 
   @observable
   String search = '';
@@ -180,27 +188,6 @@ abstract class _EventoStore with Store {
         await eventosRepository.getAllCategorias();
     categorias.clear();
     categorias_banco.forEach((element) => categorias.add(element));
-  }
-
-  @action
-  getAllEventos() async {
-    loading = true;
-    try {
-      List<Evento> eventos_banco =
-          await eventosRepository.getAllEvento(search, filter);
-      print(eventos_banco);
-
-      eventos!.clear();
-      if (eventos_banco != null && eventos_banco.length > 0) {
-        eventos_banco.forEach((element) {
-          eventos!.add(element);
-        });
-      }
-
-      loading = false;
-    } catch (e) {
-      print(e);
-    }
   }
 
   @action

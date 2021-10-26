@@ -20,9 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
+    print(usuarioStore.usuario);
     when((_) => usuarioStore.usuario != null, () {
-      Modular.to.pushReplacementNamed('/eventos-cadastro'); //todo: trocar para listagem
+      Modular.to.pushReplacementNamed('/home');
     });
   }
 
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-           backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
+          backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
         ),
         body: Stack(
           children: [

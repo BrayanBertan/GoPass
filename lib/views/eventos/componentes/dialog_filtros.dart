@@ -51,7 +51,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                 title: Slider(
                   value: filterStore.precoMax ?? 50,
                   min: 0,
-                  max: 300,
+                  max: 500,
                   onChanged: (double value) {
                     filterStore.setPrecoMax(value);
                   },
@@ -138,7 +138,9 @@ class _DialogFiltrosState extends State<DialogFiltros> {
             Observer(builder: (_) {
               return MultiSelectDialogField(
                 initialValue: filterStore.categoriasSelecionadasList,
-                onConfirm: (itens) => filterStore.setSelecionados,
+                onConfirm: (itens) {
+                  filterStore.setSelecionados(itens);
+                },
                 title: Text('Categorias'),
                 buttonText: Text('Eventos'),
                 items: filterStore.categoriasList!

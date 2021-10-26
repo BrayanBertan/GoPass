@@ -57,6 +57,6 @@ class Evento {
   @override
   String toString() {
     // TODO: implement toString
-    return "id: $id Nome: $nome data_evento: $data_evento";
+    return "id: $id Nome: $nome categoria: $categoria_id";
   }
 }

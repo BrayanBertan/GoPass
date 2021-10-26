@@ -50,7 +50,6 @@ class EventoRepository {
   }
 
   Future<List<Evento>> getAllEvento(String search, FilterStore filter) async {
-    print('filterr $filter');
     var format = DateFormat('yyyy-MM-dd');
     Database dbEvento = await br.db;
     DateTime dtInicial = DateTime.now().subtract(Duration(days: 3000));
@@ -59,11 +58,21 @@ class EventoRepository {
     if (filter.dataFinal != null) dtFinal = filter.dataFinal!;
 
     String sql =
-        "SELECT * FROM eventos WHERE DATETIME(data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal'";
+        "SELECT * FROM eventos WHERE DATETIME(data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal' AND valor <= ${filter.precoMax}";
 
     if (search.isNotEmpty) sql = "$sql AND nome LIKE '%$search%'";
 
-    print(sql);
+    if (filter.categoriasSelecionadasList.isNotEmpty) {
+      dynamic categorias = [];
+      filter.categoriasSelecionadasList.forEach((element) {
+        categorias.add(element.id);
+      });
+      categorias = categorias.toString();
+      categorias = categorias.replaceAll("[", "(");
+      categorias = categorias.replaceAll("]", ")");
+      sql = "$sql AND categoria_id IN $categorias";
+    }
+
     List<Map> maps = await dbEvento.rawQuery(sql);
     List<Evento> listEvento = [];
     for (Map m in maps) {

@@ -22,7 +22,7 @@ class BancoRepository {
 
   Future<Database> initDb() async {
     final dataBasesPath = await getDatabasesPath();
-    final path = join(dataBasesPath, "test54544.db");
+    final path = join(dataBasesPath, "test911.db");
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
       await db.execute("CREATE TABLE usuarios("
@@ -79,7 +79,8 @@ class BancoRepository {
                   foto: 'assets/images/admin.png',
                   cpf: '11111111111',
                   email: 'admin@admin.com',
-                  senha: '123456')
+                  senha: '123456',
+                  tipo: 'A')
               .toMap());
     });
   }
