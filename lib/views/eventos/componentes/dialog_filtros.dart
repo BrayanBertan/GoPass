@@ -85,8 +85,9 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                     onTap: () async {
                       filterStore.dataInicial = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now().add(Duration(days: 1)),
-                        firstDate: DateTime.now().add(Duration(days: 1)),
+                        initialDate:
+                            DateTime.now().subtract(Duration(days: 11)),
+                        firstDate: DateTime.now().subtract(Duration(days: 11)),
                         lastDate: DateTime.now().add(Duration(days: 60)),
                         locale: const Locale("pt"),
                       );
@@ -155,6 +156,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                   primary: Color.fromRGBO(203, 100, 100, 1),
                 ),
                 onPressed: () {
+                  filterStore.setFilter();
                   Modular.to.pop();
                 },
                 child: Text('Filtrar')),

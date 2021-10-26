@@ -1,13 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:gopass_app/stores/evento_store.dart';
+import 'package:intl/intl.dart';
+
+final eventoStore = EventoStore();
 
 class EventosGridItem extends StatefulWidget {
-  const EventosGridItem({Key? key}) : super(key: key);
-
+  var index;
+  EventosGridItem({this.index});
   @override
-  _EventosGridItemState createState() => _EventosGridItemState();
+  _EventosGridItemState createState() => _EventosGridItemState(this.index);
 }
 
 class _EventosGridItemState extends State<EventosGridItem> {
+  @override
+  void initState() {
+    eventoStore.getAllEventos();
+    super.initState();
+  }
+
+  var index;
+  _EventosGridItemState(this.index);
+  var format = DateFormat('dd/MM/yyyy');
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,11 +38,18 @@ class _EventosGridItemState extends State<EventosGridItem> {
             children: [
               Stack(
                 children: [
-                  Image.network(
-                    'https://www.jambase.com/wp-content/uploads/2019/10/dir-en-grey-ticketmaster-ram.jpg',
-                    fit: BoxFit.fill,
-                    height: 125,
-                  ),
+                  this.index?.foto != null
+                      ? Image.file(
+                          File(this.index?.foto),
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: 125,
+                        )
+                      : Image.asset(
+                          'assets/images/dance.png',
+                          fit: BoxFit.fill,
+                          height: 125,
+                        ),
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -41,7 +63,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
                       margin: const EdgeInsets.only(left: 0),
                       child: Center(
                         child: Text(
-                          '25/10/2021',
+                          format.format(this.index.data_evento),
                         ),
                       ),
                     ),
@@ -49,7 +71,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
                 ],
               ),
               Text(
-                'Dir en Grey',
+                '${this.index.nome}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
@@ -69,7 +91,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
                           height: 25,
                         ),
                         title: Text(
-                          'Lorem ipsum dolor sit amet.Lorem ipsum dolor sit ametLorem ipsum dolor sit amet',
+                          '${this.index.endereco}',
                           textAlign: TextAlign.left,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),

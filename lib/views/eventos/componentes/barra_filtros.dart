@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/views/eventos/componentes/dialog_filtros.dart';
 
 class BarraFiltros extends StatefulWidget {
-  const BarraFiltros({Key? key}) : super(key: key);
+  final TextEditingController searchController;
+  EventoStore eventoStore;
+  BarraFiltros(this.searchController, this.eventoStore);
 
   @override
-  _BarraFiltrosState createState() => _BarraFiltrosState();
+  _BarraFiltrosState createState() =>
+      _BarraFiltrosState(this.searchController, this.eventoStore);
 }
 
 class _BarraFiltrosState extends State<BarraFiltros> {
+  final TextEditingController searchController;
+  EventoStore eventoStore;
+  _BarraFiltrosState(this.searchController, this.eventoStore);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -20,8 +27,9 @@ class _BarraFiltrosState extends State<BarraFiltros> {
                 const SizedBox(
                   width: 10,
                 ),
-                const Expanded(
+                Expanded(
                     child: TextField(
+                  controller: searchController,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Pesquise',
@@ -39,7 +47,9 @@ class _BarraFiltrosState extends State<BarraFiltros> {
                     icon: Image.asset(
                       'assets/images/search.png',
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      eventoStore.setSearch(searchController.text);
+                    }),
               ],
             )),
         IconButton(

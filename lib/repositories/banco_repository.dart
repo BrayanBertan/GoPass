@@ -22,7 +22,7 @@ class BancoRepository {
 
   Future<Database> initDb() async {
     final dataBasesPath = await getDatabasesPath();
-    final path = join(dataBasesPath, "test5.db");
+    final path = join(dataBasesPath, "test54544.db");
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int newerVersion) async {
       await db.execute("CREATE TABLE usuarios("
@@ -42,6 +42,7 @@ class BancoRepository {
           "categoria_id INTEGER,"
           "usuario_id INTEGER,"
           "nome TEXT,"
+          "foto TEXT,"
           "descricao TEXT NULLABLE,"
           "endereco TEXT,"
           "data_evento INTEGER,"

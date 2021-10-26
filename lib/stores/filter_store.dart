@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/categoria_model.dart';
 import 'package:gopass_app/repositories/evento_repository.dart';
+import 'package:gopass_app/stores/evento_store.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
@@ -63,7 +64,7 @@ abstract class _FilterStore with Store {
   String get formatFinal => format.format(dataFinal ?? DateTime.now());
 
   void setFilter() {
-    //Modular.get<RecipeStore>().setFilter(this);
+    Modular.get<EventoStore>().setFilter(this as FilterStore);
   }
 
   FilterStore clone() {

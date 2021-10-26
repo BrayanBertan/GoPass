@@ -2,6 +2,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/categoria_model.dart';
 import 'package:gopass_app/models/evento_model.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
+import 'package:gopass_app/stores/filter_store.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
 class EventoRepository {
@@ -47,9 +49,22 @@ class EventoRepository {
         where: "id = ?", whereArgs: [evento.id]);
   }
 
-  Future<List<Evento>> getAllEvento() async {
+  Future<List<Evento>> getAllEvento(String search, FilterStore filter) async {
+    print('filterr $filter');
+    var format = DateFormat('yyyy-MM-dd');
     Database dbEvento = await br.db;
-    List<Map> maps = await dbEvento.rawQuery("SELECT * FROM eventos");
+    DateTime dtInicial = DateTime.now().subtract(Duration(days: 3000));
+    DateTime dtFinal = DateTime.now().add(Duration(days: 3000));
+    if (filter.dataInicial != null) dtInicial = filter.dataInicial!;
+    if (filter.dataFinal != null) dtFinal = filter.dataFinal!;
+
+    String sql =
+        "SELECT * FROM eventos WHERE DATETIME(data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal'";
+
+    if (search.isNotEmpty) sql = "$sql AND nome LIKE '%$search%'";
+
+    print(sql);
+    List<Map> maps = await dbEvento.rawQuery(sql);
     List<Evento> listEvento = [];
     for (Map m in maps) {
       listEvento.add(Evento.fromMap(m));

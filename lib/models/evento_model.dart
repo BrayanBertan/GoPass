@@ -9,6 +9,7 @@ class Evento {
   int? lotacao_minima;
   int? lotacao_maxima;
   double? valor;
+  String? foto;
 
   Evento(
       {this.categoria_id,
@@ -18,31 +19,34 @@ class Evento {
       this.data_evento,
       this.lotacao_minima,
       this.lotacao_maxima,
-      this.valor
-      });
+      this.valor,
+      this.foto});
 
   Evento.fromMap(Map map) {
-    id    = map['id'];
-    categoria_id  = map['categoria_id'];
-    usuario_id  = map['usuario_id'];
-    nome   = map['nome'];
+    id = map['id'];
+    categoria_id = map['categoria_id'];
+    usuario_id = map['usuario_id'];
+    nome = map['nome'];
     endereco = map['endereco'];
-    data_evento = DateTime.fromMillisecondsSinceEpoch(map['data_evento'] * 1000);
-    lotacao_minima  = map['lotacao_minima'];
-    lotacao_maxima  = map['lotacao_maxima'];
-    valor  = map['valor'];
+    data_evento =
+        DateTime.fromMillisecondsSinceEpoch(map['data_evento'] * 1000);
+    lotacao_minima = map['lotacao_minima'];
+    lotacao_maxima = map['lotacao_maxima'];
+    valor = map['valor'];
+    foto = map['foto'];
   }
 
   Map<String, Object?> toMap() {
     Map<String, dynamic>? map = {
-      'categoria_id'    : categoria_id,
-      'usuario_id'      : usuario_id,
-      'nome'            : nome,
-      'endereco'        : endereco,
-      'data_evento'     : ((data_evento)!.millisecondsSinceEpoch / 1000).round(),
-      'lotacao_minima'  : lotacao_minima,
-      'lotacao_maxima'  : lotacao_maxima,
-      'valor'           : valor,
+      'categoria_id': categoria_id,
+      'usuario_id': usuario_id,
+      'nome': nome,
+      'endereco': endereco,
+      'data_evento': ((data_evento)!.millisecondsSinceEpoch / 1000).round(),
+      'lotacao_minima': lotacao_minima,
+      'lotacao_maxima': lotacao_maxima,
+      'valor': valor,
+      'foto': foto
     };
     if (id != null) {
       map['id'] = id;

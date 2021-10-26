@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gopass_app/stores/signup_store.dart';
+import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
 
-final signupStore = SignupStore();
+final eventoStore = EventoStore();
 
 class EventoCadastroPage extends StatefulWidget {
   const EventoCadastroPage({Key? key}) : super(key: key);
@@ -20,15 +20,19 @@ class EventoCadastroPage extends StatefulWidget {
 
 class _EventoCadastroPageState extends State<EventoCadastroPage> {
   @override
-  Widget build(BuildContext context) {
-    String dropdownValue = 'Teste1';
+  void initState() {
+    eventoStore.getAllCategorias();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     File? _image;
 
     void onImageSelected(File image) async {
       Modular.to.pop();
       File tmpFile = File(image.path);
-      signupStore.foto = tmpFile.path;
+      eventoStore.foto = tmpFile.path;
     }
 
     return Scaffold(
@@ -52,9 +56,9 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                 onTap: () => showModalBottomSheet(
                     context: context,
                     builder: (context) => ImageOptionsSheet(onImageSelected)),
-                child: signupStore.foto != null
+                child: eventoStore.foto != null
                     ? Image.file(
-                        File(signupStore.foto!),
+                        File(eventoStore.foto!),
                         height: 300,
                       )
                     : Image.asset(
@@ -75,72 +79,79 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                     Observer(builder: (_) {
                       return Expanded(
                           flex: 9,
-                          child: TextField(
-                            onChanged: signupStore.setNome,
+                          child: TextFormField(
+                            initialValue: eventoStore.nome,
+                            onChanged: eventoStore.setNome,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Titulo',
                               isDense: true,
-                              errorText: signupStore.nomeError,
+                              errorText: eventoStore.nomeError,
                             ),
                           ));
                     }),
                     Expanded(flex: 1, child: Container()),
                     Expanded(
                       flex: 4,
-                      child: TextButton(onPressed: () {
-                        DatePicker.showDateTimePicker(context,
-                            showTitleActions: true,
-                            maxTime: DateTime.now(), onChanged: (date) {
-                          print('change $date');
-                        },
-                            onConfirm: (date) {},
-                            currentTime: DateTime.now(),
-                            locale: LocaleType.pt);
-                      }, child: Observer(
-                        builder: (_) {
-                          return Column(
+                      child: TextButton(
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime:
+                                    DateTime.now().subtract(Duration(days: 1)),
+                                onConfirm: (date) {
+                              eventoStore.setData(date);
+                            },
+                                currentTime:
+                                    eventoStore.dataEvento ?? DateTime.now(),
+                                locale: LocaleType.pt);
+                          },
+                          child: Column(
                             children: [
                               Center(
                                 child: Image.asset('assets/images/data.png'),
                               ),
-                              Text(
-                                '23/06/1998:23:00',
-                                style: TextStyle(fontSize: 12),
-                              ),
+                              Observer(builder: (_) {
+                                return Text(
+                                  eventoStore.formartDataEvento,
+                                  style: TextStyle(fontSize: 12),
+                                );
+                              }),
                             ],
-                          );
-                        },
-                      )),
+                          )),
                     )
                   ],
                 ),
-                Center(
+                const Center(
                   child: Text(
                     'Tipo de evento',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 Observer(builder: (_) {
-                  return DropdownButton<String>(
-                    value: dropdownValue,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
+                  return DropdownButton<int>(
+                    items: eventoStore.categorias
+                        .map(
+                          ((element) => DropdownMenuItem(
+                                value: element.id,
+                                child: Center(
+                                  child: Text(
+                                    element.nome!,
+                                  ),
+                                ),
+                              )),
+                        )
+                        .toList(),
+                    onChanged: (valor) {
+                      eventoStore.setCategoria(valor!);
                     },
-                    items: <String>['Teste1', 'Teste2', 'Teste3', 'Teste4']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    value: eventoStore.categoria,
+                    isExpanded: true,
                   );
                 }),
                 Wrap(
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'Lotação míma e máxima',
                         style: TextStyle(fontSize: 15),
@@ -148,21 +159,17 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                     ),
                     Observer(builder: (_) {
                       return ListTile(
-                        leading: Text('100'),
-                        title: Transform(
-                          alignment: FractionalOffset.center,
-                          // Rotate sliders by 90 degrees
-                          transform: new Matrix4.identity()
-                            ..rotateZ(180 * 3.1415927 / 180),
-                          child: RangeSlider(
-                            values: RangeValues(100, 200),
-                            onChanged: (RangeValues novo) {},
-                            min: 0,
-                            max: 300,
-                            divisions: 20,
-                          ),
+                        leading: Text('${eventoStore.lotacao.start}'),
+                        title: RangeSlider(
+                          values: eventoStore.lotacao,
+                          onChanged: (RangeValues novo) {
+                            eventoStore.setLotacao(novo);
+                          },
+                          min: 0,
+                          max: 300,
+                          divisions: 20,
                         ),
-                        trailing: Text('200'),
+                        trailing: Text('${eventoStore.lotacao.end}'),
                       );
                     }),
                   ],
@@ -175,24 +182,24 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                     flex: 7,
                     child: Observer(builder: (_) {
                       return TextField(
-                        onChanged: signupStore.setNome,
+                        onChanged: eventoStore.setEndereco,
                         maxLines: 3,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Endereço',
                           isDense: true,
-                          errorText: signupStore.nomeError,
+                          errorText: eventoStore.enderecoError,
                         ),
                       );
                     })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                     flex: 3,
                     child: Observer(builder: (_) {
                       return TextField(
-                        onChanged: signupStore.setNome,
+                        onChanged: eventoStore.setPreco,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                           RealInputFormatter(),
@@ -201,24 +208,24 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                           border: OutlineInputBorder(),
                           labelText: 'Preço',
                           isDense: true,
-                          errorText: signupStore.nomeError,
+                          errorText: eventoStore.precoError,
                         ),
                       );
                     }))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Observer(builder: (_) {
               return TextField(
-                onChanged: signupStore.setNome,
+                onChanged: eventoStore.setDescricao,
                 maxLines: 5,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Descrição',
                   isDense: true,
-                  errorText: signupStore.nomeError,
+                  errorText: eventoStore.descricaoError,
                 ),
               );
             }),
@@ -234,10 +241,28 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
               ),
               child: Observer(builder: (_) {
                 return ElevatedButton(
-                  onPressed: signupStore.isFormValid
+                  onPressed: eventoStore.isFormValid
                       ? () async {
-                          signupStore.signUp().then((value) =>
-                              Modular.to.pushReplacementNamed('/login'));
+                          eventoStore.cadastro().then((value) => showDialog(
+                              context: context,
+                              builder: (_) {
+                                return Dialog(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(30),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset('assets/images/tick.png'),
+                                        Text(
+                                          'Evento salvo com sucesso',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 30),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }));
                         }
                       : null,
                   child: const Text(
