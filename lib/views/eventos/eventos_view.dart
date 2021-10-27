@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/views/eventos/componentes/barra_filtros.dart';
 import 'package:gopass_app/views/eventos/componentes/eventos_grid.dart';
+import 'package:rxdart/rxdart.dart';
 
 EventoStore eventoStore = Modular.get<EventoStore>();
 final TextEditingController searchController = TextEditingController();
@@ -16,6 +17,20 @@ class EventosPage extends StatefulWidget {
 }
 
 class _EventosPageState extends State<EventosPage> {
+  final searchOnChange = BehaviorSubject<String>();
+  void search(String queryString) {
+    searchOnChange.add(queryString);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    searchOnChange.debounceTime(Duration(seconds: 1)).listen((queryString) {
+      print(queryString);
+      eventoStore.setSearch(queryString);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
@@ -26,7 +41,8 @@ class _EventosPageState extends State<EventosPage> {
                   children: [
                     Expanded(
                         flex: 1,
-                        child: BarraFiltros(searchController, eventoStore)),
+                        child: BarraFiltros(
+                            searchController, eventoStore, search)),
                     Expanded(flex: 9, child: EventosGrid(eventoStore.eventos)),
                   ],
                 )

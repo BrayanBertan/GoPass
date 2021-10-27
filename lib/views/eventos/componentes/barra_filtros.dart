@@ -5,17 +5,19 @@ import 'package:gopass_app/views/eventos/componentes/dialog_filtros.dart';
 class BarraFiltros extends StatefulWidget {
   final TextEditingController searchController;
   EventoStore eventoStore;
-  BarraFiltros(this.searchController, this.eventoStore);
+  void Function(String) search;
+  BarraFiltros(this.searchController, this.eventoStore, this.search);
 
   @override
   _BarraFiltrosState createState() =>
-      _BarraFiltrosState(this.searchController, this.eventoStore);
+      _BarraFiltrosState(this.searchController, this.eventoStore, this.search);
 }
 
 class _BarraFiltrosState extends State<BarraFiltros> {
   final TextEditingController searchController;
   EventoStore eventoStore;
-  _BarraFiltrosState(this.searchController, this.eventoStore);
+  void Function(String) search;
+  _BarraFiltrosState(this.searchController, this.eventoStore, this.search);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,17 +31,14 @@ class _BarraFiltrosState extends State<BarraFiltros> {
                 ),
                 Expanded(
                     child: TextField(
-                    onChanged: (text) {
-                      FocusScope.of(context).unfocus();
-                      eventoStore.setSearch(text);
-                    },
-                    controller: searchController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                      prefixIcon: Icon(Icons.search),
+                  onChanged: search,
+                  controller: searchController,
+                  style: TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100.0),
+                    ),
+                    prefixIcon: Icon(Icons.search),
                     // border: InputBorder.none,
                   ),
                 )),
