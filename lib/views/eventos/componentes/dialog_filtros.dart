@@ -57,7 +57,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
                   },
                   label: filterStore.precoMax?.toStringAsFixed(2) ?? '',
                   divisions: 50,
-                  activeColor: Color.fromRGBO(203, 100, 100, 1),
+                  activeColor: Colors.blueAccent,
                 ),
                 trailing: Wrap(
                   spacing: 2,
@@ -155,7 +155,7 @@ class _DialogFiltrosState extends State<DialogFiltros> {
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(203, 100, 100, 1),
+                  primary: Colors.blueAccent,
                 ),
                 onPressed: () {
                   filterStore.setFilter();

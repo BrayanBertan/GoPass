@@ -55,6 +55,7 @@ class _EventosGridItemState extends State<EventosGridItem> {
                       child: Center(
                         child: Text(
                           format.format(this.index.data_evento),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -78,8 +79,8 @@ class _EventosGridItemState extends State<EventosGridItem> {
                         minLeadingWidth: 10,
                         leading: Image.asset(
                           'assets/images/location.png',
-                          width: 25,
-                          height: 25,
+                          width: 30,
+                          height: 30,
                         ),
                         title: Text(
                           '${this.index.endereco}',

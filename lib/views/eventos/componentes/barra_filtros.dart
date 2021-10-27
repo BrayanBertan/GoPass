@@ -29,28 +29,20 @@ class _BarraFiltrosState extends State<BarraFiltros> {
                 ),
                 Expanded(
                     child: TextField(
-                  controller: searchController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    labelText: 'Pesquise',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    border: InputBorder.none,
+                    onChanged: (text) {
+                      FocusScope.of(context).unfocus();
+                      eventoStore.setSearch(text);
+                    },
+                    controller: searchController,
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      prefixIcon: Icon(Icons.search),
+                    // border: InputBorder.none,
                   ),
                 )),
-                IconButton(
-                    iconSize: 30,
-                    icon: Image.asset(
-                      'assets/images/search.png',
-                    ),
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      eventoStore.setSearch(searchController.text);
-                    }),
               ],
             )),
         IconButton(

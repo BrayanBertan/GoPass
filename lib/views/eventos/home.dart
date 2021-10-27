@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Observer(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue[100],
+          backgroundColor: Color.fromRGBO(3, 155, 229, 1),
           leading: IconButton(
             onPressed: () {
               usuarioStore.logout();

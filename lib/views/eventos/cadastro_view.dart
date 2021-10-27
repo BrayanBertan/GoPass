@@ -118,6 +118,9 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 const Center(
                   child: Text(
                     'Tipo de evento',
@@ -145,6 +148,9 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                     isExpanded: true,
                   );
                 }),
+                const SizedBox(
+                  height: 40,
+                ),
                 Wrap(
                   children: [
                     const Center(
