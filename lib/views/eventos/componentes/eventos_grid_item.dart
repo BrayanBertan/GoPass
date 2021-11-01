@@ -1,7 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/stores/evento_store.dart';
+import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:intl/intl.dart';
+
+UsuarioStore usuarioStore = Modular.get<UsuarioStore>();
+EventoStore eventosStore = Modular.get<EventoStore>();
 
 class EventosGridItem extends StatefulWidget {
   var index;
@@ -21,8 +27,15 @@ class _EventosGridItemState extends State<EventosGridItem> {
       child: Card(
         elevation: 8,
         child: Scaffold(
-          bottomNavigationBar:
-              ElevatedButton(onPressed: () {}, child: Text('Visualizar')),
+          bottomNavigationBar: ElevatedButton(
+              onPressed: () {
+                if (usuarioStore.usuario!.tipo != 'C') {
+                  eventosStore.setEvento(this.index);
+                  eventosStore.setAbaIndex(1);
+                }
+              },
+              child: Text(
+                  usuarioStore.usuario!.tipo == 'C' ? 'Visualizar' : 'Editar')),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

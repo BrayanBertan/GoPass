@@ -193,7 +193,7 @@ abstract class _EventoStore with Store {
   @action
   Future<void> cadastro() async {
     try {
-      var retorno = await eventosRepository.saveEvento(Evento(
+      final evento = Evento(
           nome: nome,
           categoria_id: categoria,
           data_evento: dataEvento,
@@ -202,10 +202,34 @@ abstract class _EventoStore with Store {
           lotacao_minima: lotacao.start.toInt(),
           usuario_id: 1,
           valor: preco,
-          foto: foto));
+          foto: foto);
+      var retorno;
+      if (id == null)
+        retorno = await eventosRepository.saveEvento(evento);
+      else {
+        evento.id = id;
+        retorno = await eventosRepository.updateEvento(evento);
+      }
       reset();
     } catch (e) {
       print(e);
     }
+  }
+
+  int? id;
+  @observable
+  Evento? eventoEditar;
+  @action
+  void setEvento(Evento value) {
+    nome = value.nome;
+    categoria = value.categoria_id;
+    foto = value.foto;
+    lotacao = RangeValues(
+        value.lotacao_minima!.toDouble(), value.lotacao_maxima!.toDouble());
+    dataEvento = value.data_evento;
+    endereco = value.endereco;
+    descricao = value.descricao;
+    preco = value.valor;
+    id = value.id;
   }
 }

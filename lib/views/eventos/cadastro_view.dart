@@ -183,7 +183,8 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                 Expanded(
                     flex: 7,
                     child: Observer(builder: (_) {
-                      return TextField(
+                      return TextFormField(
+                        initialValue: eventoStore.endereco,
                         onChanged: eventoStore.setEndereco,
                         maxLines: 3,
                         decoration: InputDecoration(
@@ -200,7 +201,8 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                 Expanded(
                     flex: 3,
                     child: Observer(builder: (_) {
-                      return TextField(
+                      return TextFormField(
+                        initialValue: eventoStore.preco.toString(),
                         onChanged: eventoStore.setPreco,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -220,7 +222,8 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
               height: 10,
             ),
             Observer(builder: (_) {
-              return TextField(
+              return TextFormField(
+                initialValue: eventoStore.descricao,
                 onChanged: eventoStore.setDescricao,
                 maxLines: 5,
                 decoration: InputDecoration(

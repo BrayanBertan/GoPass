@@ -282,6 +282,21 @@ mixin _$EventoStore on _EventoStore, Store {
     });
   }
 
+  final _$eventoEditarAtom = Atom(name: '_EventoStore.eventoEditar');
+
+  @override
+  Evento? get eventoEditar {
+    _$eventoEditarAtom.reportRead();
+    return super.eventoEditar;
+  }
+
+  @override
+  set eventoEditar(Evento? value) {
+    _$eventoEditarAtom.reportWrite(value, super.eventoEditar, () {
+      super.eventoEditar = value;
+    });
+  }
+
   final _$getAllCategoriasAsyncAction =
       AsyncAction('_EventoStore.getAllCategorias');
 
@@ -432,6 +447,17 @@ mixin _$EventoStore on _EventoStore, Store {
   }
 
   @override
+  void setEvento(Evento value) {
+    final _$actionInfo = _$_EventoStoreActionController.startAction(
+        name: '_EventoStore.setEvento');
+    try {
+      return super.setEvento(value);
+    } finally {
+      _$_EventoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 abaIndex: ${abaIndex},
@@ -448,6 +474,7 @@ categorias: ${categorias},
 foto: ${foto},
 loading: ${loading},
 error: ${error},
+eventoEditar: ${eventoEditar},
 nomeValid: ${nomeValid},
 precoValid: ${precoValid},
 formartDataEvento: ${formartDataEvento},

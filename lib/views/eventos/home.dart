@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/models/evento_model.dart';
 import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:gopass_app/views/cadastro/cadastro_view.dart';
@@ -30,7 +31,25 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _telasAdmin = [EventosPage(), EventoCadastroPage()];
 
   void abaSelecionada(int aba) {
+    if (aba == 1)
+      eventoStore.setEvento(Evento(
+          nome: '',
+          foto: null,
+          categoria_id: 1,
+          data_evento: DateTime.now().add(Duration(days: 5)),
+          endereco: '',
+          lotacao_maxima: 200,
+          lotacao_minima: 100,
+          usuario_id: 1,
+          valor: 0)
+        ..id = null);
     eventoStore.setAbaIndex(aba);
+  }
+
+  @override
+  void initState() {
+    abaSelecionada(0);
+    super.initState();
   }
 
   @override
@@ -49,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar:
             (usuarioStore.usuario == null || usuarioStore.usuario!.tipo == 'C')
-                ? BottomMenuCliente(abaSelecionada)
+                ? BottomMenuCliente(abaSelecionada, eventoStore.abaIndex)
                 : BottomMenuAdmin(abaSelecionada, eventoStore.abaIndex),
         body:
             (usuarioStore.usuario == null || usuarioStore.usuario!.tipo == 'C')
