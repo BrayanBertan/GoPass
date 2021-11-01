@@ -10,6 +10,7 @@ class Evento {
   int? lotacao_maxima;
   double? valor;
   String? foto;
+  int? total_vendido;
 
   Evento(
       {this.categoria_id,
@@ -34,6 +35,7 @@ class Evento {
     lotacao_maxima = map['lotacao_maxima'];
     valor = map['valor'];
     foto = map['foto'];
+    total_vendido = map['total_vendido'];
   }
 
   Map<String, Object?> toMap() {

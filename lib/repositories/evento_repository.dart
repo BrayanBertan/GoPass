@@ -58,7 +58,7 @@ class EventoRepository {
     if (filter.dataFinal != null) dtFinal = filter.dataFinal!;
 
     String sql =
-        "SELECT * FROM eventos WHERE DATETIME(data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal' AND valor <= ${filter.precoMax}";
+        "SELECT a.*,(SELECT COUNT(*) FROM reservas WHERE evento_id = a.id) AS total_vendido FROM eventos AS a WHERE DATETIME(a.data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal' AND a.valor <= ${filter.precoMax}";
 
     if (search.isNotEmpty) sql = "$sql AND nome LIKE '%$search%'";
 

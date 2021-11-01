@@ -72,7 +72,27 @@ class _EventosGridItemState extends State<EventosGridItem> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  usuarioStore.usuario!.tipo == 'A'
+                      ? Tooltip(
+                          message:
+                              'Total de ingressos vendidos para esse evento: ${this.index.total_vendido}',
+                          child: Icon(
+                            Icons.people,
+                            size: 30,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.blue,
+                          ),
+                          height: 50,
+                          padding: const EdgeInsets.all(8.0),
+                          preferBelow: false,
+                          textStyle: const TextStyle(
+                            fontSize: 24,
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
               Text(
