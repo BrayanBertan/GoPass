@@ -2,15 +2,30 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/helpers/extensions.dart';
 import 'package:gopass_app/models/usuario_model.dart';
 import 'package:gopass_app/repositories/usuario_repository.dart';
+import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
 part 'signup_store.g.dart';
 
+final usuarioStore = Modular.get<UsuarioStore>();
 class SignupStore = _SignupStore with _$SignupStore;
 
 abstract class _SignupStore with Store {
+  _SignupStore() {
+    UsuarioStore usuarioStore = Modular.get<UsuarioStore>();
+    if (usuarioStore.usuario != null) {
+      id = usuarioStore.usuario!.id;
+      nome = usuarioStore.usuario!.nome;
+      email = usuarioStore.usuario!.email;
+      foto = usuarioStore.usuario!.foto;
+      cpf = usuarioStore.usuario!.cpf;
+      nascimento = usuarioStore.usuario!.nascimento;
+      senha = usuarioStore.usuario!.senha;
+    }
+  }
   final usuarioRepository = Modular.get<UsuarioRepository>();
+  int? id;
   @observable
   String? nome;
 
@@ -63,16 +78,22 @@ abstract class _SignupStore with Store {
   Future<void> signUp() async {
     try {
       loading = true;
-      var retorno = await usuarioRepository.saveUsuario(Usuario(
+      final usuario = Usuario(
           nome: nome,
           email: email,
           senha: senha,
           cpf: cpf,
           foto: foto,
-          nascimento: nascimento));
+          nascimento: nascimento);
+      var retorno;
+      if (id == null)
+        retorno = await usuarioRepository.saveUsuario(usuario);
+      else {
+        usuario.id = id;
+        retorno = await usuarioRepository.updateUsuario(usuario);
+        usuarioStore.setUser(usuario);
+      }
       loading = false;
-      print(retorno.toString());
-      print(retorno.id);
     } catch (e) {
       print(e);
     }

@@ -5,19 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/stores/signup_store.dart';
+import 'package:gopass_app/stores/usuario_store.dart';
 import 'package:gopass_app/views/cadastro/componentes/image_options.dart';
 
-final signupStore = SignupStore();
+UsuarioStore usuarioStore = Modular.get<UsuarioStore>();
+EventoStore eventoStore = Modular.get<EventoStore>();
 
 class CadastroPage extends StatefulWidget {
-  const CadastroPage({Key? key}) : super(key: key);
-
   @override
   _CadastroPageState createState() => _CadastroPageState();
 }
 
 class _CadastroPageState extends State<CadastroPage> {
+  late SignupStore signupStore;
+  @override
+  void initState() {
+    signupStore = SignupStore();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     File? _image;
@@ -29,18 +37,17 @@ class _CadastroPageState extends State<CadastroPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(3, 155, 229, 1),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text(
-                  'Cadastro de usuário',
-                  style: TextStyle(
+                Text(
+                  usuarioStore.usuario == null
+                      ? 'Cadastro de usuário'
+                      : 'Edição de usuário',
+                  style: const TextStyle(
                       fontSize: 40.0, color: Color.fromRGBO(3, 155, 229, 1)),
                 ),
                 const SizedBox(
@@ -90,7 +97,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Observer(builder: (_) {
-                      return TextField(
+                      return TextFormField(
+                        initialValue: signupStore.nome,
                         onChanged: signupStore.setNome,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -108,7 +116,8 @@ class _CadastroPageState extends State<CadastroPage> {
                       children: [
                         Expanded(
                           child: Observer(builder: (_) {
-                            return TextField(
+                            return TextFormField(
+                              initialValue: signupStore.cpf,
                               onChanged: signupStore.setCpf,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
@@ -154,7 +163,8 @@ class _CadastroPageState extends State<CadastroPage> {
                       height: 10,
                     ),
                     Observer(builder: (_) {
-                      return TextField(
+                      return TextFormField(
+                        initialValue: signupStore.email,
                         keyboardType: TextInputType.emailAddress,
                         onChanged: signupStore.setEmail,
                         decoration: InputDecoration(
@@ -173,7 +183,8 @@ class _CadastroPageState extends State<CadastroPage> {
                       children: [
                         Expanded(
                           child: Observer(builder: (_) {
-                            return TextField(
+                            return TextFormField(
+                              initialValue: signupStore.senha,
                               onChanged: signupStore.setSenha,
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
@@ -192,7 +203,8 @@ class _CadastroPageState extends State<CadastroPage> {
                         ),
                         Expanded(
                           child: Observer(builder: (_) {
-                            return TextField(
+                            return TextFormField(
+                              initialValue: signupStore.senha,
                               onChanged: signupStore.setSenhaC,
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
@@ -222,14 +234,19 @@ class _CadastroPageState extends State<CadastroPage> {
                   ),
                   child: Observer(builder: (_) {
                     return ElevatedButton(
-                      onPressed: signupStore.isFormValid
+                      onPressed: (signupStore.isFormValid ||
+                              usuarioStore.usuario != null)
                           ? () async {
-                              signupStore.signUp().then((value) =>
-                                  Modular.to.pushReplacementNamed('/login'));
+                              signupStore.signUp().then((value) {
+                                if (usuarioStore.usuario != null)
+                                  eventoStore.setAbaIndex(0);
+                                else
+                                  Modular.to.pushReplacementNamed('/login');
+                              });
                             }
                           : null,
                       child: const Text(
-                        'Cadastrar',
+                        'Salvar',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,

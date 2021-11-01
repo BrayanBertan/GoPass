@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/stores/usuario_store.dart';
+import 'package:gopass_app/views/cadastro/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/componentes/bottom_menu_admin.dart';
 import 'package:gopass_app/views/eventos/componentes/bottom_menu_cliente.dart';
@@ -20,7 +21,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _telasCliente = [EventosPage()];
+  final List<Widget> _telasCliente = [
+    EventosPage(),
+    Container(),
+    CadastroPage()
+  ];
 
   final List<Widget> _telasAdmin = [EventosPage(), EventoCadastroPage()];
 

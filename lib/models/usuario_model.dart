@@ -47,6 +47,6 @@ class Usuario {
   @override
   String toString() {
     // TODO: implement toString
-    return "id: $id Nome: $nome foto: $foto";
+    return "id: $id Nome: $nome senha: $senha";
   }
 }

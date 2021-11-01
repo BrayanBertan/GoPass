@@ -15,7 +15,16 @@ class UsuarioRepository {
   Future<Usuario?> getUsuario(String email, String senha) async {
     Database dbUsuario = await br.db;
     List<Map> maps = await dbUsuario.query("usuarios",
-        columns: ['id', 'nome', 'email', 'cpf', 'foto', 'nascimento', 'tipo'],
+        columns: [
+          'id',
+          'nome',
+          'email',
+          'cpf',
+          'foto',
+          'nascimento',
+          'tipo',
+          'senha'
+        ],
         where: "email = ? AND senha = ?",
         whereArgs: [email, senha]);
     if (maps.length > 0) {
