@@ -32,7 +32,8 @@ class _EventosGridItemState extends State<EventosGridItem> {
                 if (usuarioStore.usuario!.tipo != 'C') {
                   eventosStore.setEvento(this.index);
                   eventosStore.setAbaIndex(1);
-                }
+                } else
+                  Modular.to.pushNamed('/evento-info', arguments: this.index);
               },
               child: Text(
                   usuarioStore.usuario!.tipo == 'C' ? 'Visualizar' : 'Editar')),

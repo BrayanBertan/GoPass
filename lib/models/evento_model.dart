@@ -3,7 +3,7 @@ class Evento {
   int? categoria_id;
   int? usuario_id;
   String? nome;
-  String descricao = '';
+  String? descricao;
   String? endereco;
   DateTime? data_evento;
   int? lotacao_minima;
@@ -21,7 +21,8 @@ class Evento {
       this.lotacao_minima,
       this.lotacao_maxima,
       this.valor,
-      this.foto});
+      this.foto,
+      this.descricao});
 
   Evento.fromMap(Map map) {
     id = map['id'];
@@ -36,6 +37,7 @@ class Evento {
     valor = map['valor'];
     foto = map['foto'];
     total_vendido = map['total_vendido'];
+    descricao = map['descricao'];
   }
 
   Map<String, Object?> toMap() {
@@ -48,7 +50,8 @@ class Evento {
       'lotacao_minima': lotacao_minima,
       'lotacao_maxima': lotacao_maxima,
       'valor': valor,
-      'foto': foto
+      'foto': foto,
+      'descricao': descricao
     };
     if (id != null) {
       map['id'] = id;
@@ -59,6 +62,6 @@ class Evento {
   @override
   String toString() {
     // TODO: implement toString
-    return "id: $id Nome: $nome categoria: $categoria_id";
+    return "id: $id Nome: $nome lotacao: $lotacao_maxima";
   }
 }

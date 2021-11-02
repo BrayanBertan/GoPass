@@ -1,6 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/reserva_model.dart';
-import 'package:gopass_app/models/usuario_model.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -16,7 +15,15 @@ class ReservaRepository {
   Future<Reserva?> getReserva(id) async {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.query("reservas",
-        columns: ['id', 'evento_id', 'usuario_id', 'assento_id', 'data_reserva', 'confirmada', 'modo_pagamento'],
+        columns: [
+          'id',
+          'evento_id',
+          'usuario_id',
+          'assento_id',
+          'data_reserva',
+          'confirmada',
+          'modo_pagamento'
+        ],
         where: "id = ?",
         whereArgs: [id]);
     if (maps.length > 0) {
@@ -40,9 +47,10 @@ class ReservaRepository {
         where: "id = ?", whereArgs: [reserva.id]);
   }
 
-  Future<List<Reserva>> getAllReserva() async {
+  Future<List<Reserva>> getAllReserva(int evento) async {
     Database dbReserva = await br.db;
-    List<Map> maps = await dbReserva.rawQuery("SELECT * FROM reservas");
+    List<Map> maps = await dbReserva
+        .rawQuery("SELECT * FROM reservas WHERE evento_id = $evento");
     List<Reserva> listReserva = [];
     for (Map m in maps) {
       listReserva.add(Reserva.fromMap(m));

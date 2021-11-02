@@ -255,7 +255,7 @@ class _EventoCadastroPageState extends State<EventoCadastroPage> {
                         }
                       : null,
                   child: const Text(
-                    'Cadastrar',
+                    'Salvar',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,

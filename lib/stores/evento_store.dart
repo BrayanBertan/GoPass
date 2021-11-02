@@ -202,7 +202,8 @@ abstract class _EventoStore with Store {
           lotacao_minima: lotacao.start.toInt(),
           usuario_id: 1,
           valor: preco,
-          foto: foto);
+          foto: foto,
+          descricao: descricao);
       var retorno;
       if (id == null)
         retorno = await eventosRepository.saveEvento(evento);
