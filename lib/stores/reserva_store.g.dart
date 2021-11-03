@@ -9,6 +9,21 @@ part of 'reserva_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ReservaStore on _ReservaStore, Store {
+  Computed<Function?>? _$isValidComputed;
+
+  @override
+  Function? get isValid =>
+      (_$isValidComputed ??= Computed<Function?>(() => super.isValid,
+              name: '_ReservaStore.isValid'))
+          .value;
+  Computed<double>? _$valorTotalReservaComputed;
+
+  @override
+  double get valorTotalReserva => (_$valorTotalReservaComputed ??=
+          Computed<double>(() => super.valorTotalReserva,
+              name: '_ReservaStore.valorTotalReserva'))
+      .value;
+
   final _$alfabetoIndexAtom = Atom(name: '_ReservaStore.alfabetoIndex');
 
   @override
@@ -99,7 +114,9 @@ mixin _$ReservaStore on _ReservaStore, Store {
 alfabetoIndex: ${alfabetoIndex},
 reservas: ${reservas},
 reservasAssento: ${reservasAssento},
-assentosSelecionados: ${assentosSelecionados}
+assentosSelecionados: ${assentosSelecionados},
+isValid: ${isValid},
+valorTotalReserva: ${valorTotalReserva}
     ''';
   }
 }

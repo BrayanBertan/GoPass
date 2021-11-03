@@ -25,10 +25,11 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
     assento = 0;
     reservaStore = ReservaStore();
     reservaStore.getAllReservaS(evento.id!);
+    reservaStore.preco = evento.valor!;
     super.initState();
   }
 
-  var format = DateFormat('dd/MM/yyyy hh:mm');
+  var format = DateFormat('dd/MM/yyyy HH:mm');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,11 +175,15 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
                                       child: Observer(
                                         builder: (_) {
                                           return GestureDetector(
-                                            onTap: () {
-                                              reservaStore
-                                                  .setAssentosSelecionados(
-                                                      gambiarra);
-                                            },
+                                            onTap: !reservaStore.reservasAssento
+                                                    .contains(gambiarra)
+                                                ? () {
+                                                    print(gambiarra);
+                                                    reservaStore
+                                                        .setAssentosSelecionados(
+                                                            gambiarra);
+                                                  }
+                                                : null,
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   color: reservaStore
@@ -224,10 +229,10 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
               ),
               child: Observer(builder: (_) {
                 return ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Reservar',
-                    style: TextStyle(
+                  onPressed: reservaStore.isValid as void Function()?,
+                  child: Text(
+                    'Reservar R\$ ${reservaStore.valorTotalReserva}',
+                    style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                     ),

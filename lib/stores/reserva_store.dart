@@ -62,7 +62,7 @@ abstract class _ReservaStore with Store {
         : (lotacao + int.parse((lotacao / 12).toStringAsFixed(0)) + 2);
   }
 
-  void Reservar() {
+  Future<void> Reservar() async {
     reservaRepository.saveReserva(Reserva(
         usuario_id: 2,
         assento_id: 15,
@@ -84,4 +84,12 @@ abstract class _ReservaStore with Store {
     print('reservas $reservasAssento');
     print('contains ${reservasAssento.contains(15)}');
   }
+
+  @computed
+  Function? get isValid => assentosSelecionados.isNotEmpty ? Reservar : null;
+
+  late double preco;
+
+  @computed
+  double get valorTotalReserva => assentosSelecionados.length * preco;
 }
