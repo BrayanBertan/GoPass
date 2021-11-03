@@ -27,7 +27,8 @@ class EventoRepository {
       'data_evento',
       'lotacao_minima',
       'lotacao_maxima',
-      'valor'
+      'valor',
+      'foto'
     ]);
     if (maps.length > 0) {
       return Evento.fromMap(maps.first);

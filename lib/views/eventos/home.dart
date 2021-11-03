@@ -9,6 +9,7 @@ import 'package:gopass_app/views/eventos/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/componentes/bottom_menu_admin.dart';
 import 'package:gopass_app/views/eventos/componentes/bottom_menu_cliente.dart';
 import 'package:gopass_app/views/eventos/eventos_view.dart';
+import 'package:gopass_app/views/eventos/meus_eventos.dart';
 
 EventoStore eventoStore = Modular.get<EventoStore>();
 UsuarioStore usuarioStore = Modular.get<UsuarioStore>();
@@ -24,7 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Widget> _telasCliente = [
     EventosPage(),
-    Container(),
+    MeusEventosPage(),
     CadastroPage()
   ];
 

@@ -57,7 +57,6 @@ class BancoRepository {
           "id INTEGER PRIMARY KEY,"
           "evento_id INTEGER,"
           "usuario_id INTEGER,"
-          "assento_id INTEGER,"
           "data_reserva INTEGER,"
           "confirmada INTEGER,"
           "modo_pagamento TEXT)");

@@ -9,13 +9,12 @@ part of 'reserva_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ReservaStore on _ReservaStore, Store {
-  Computed<Function?>? _$isValidComputed;
+  Computed<bool>? _$isValidComputed;
 
   @override
-  Function? get isValid =>
-      (_$isValidComputed ??= Computed<Function?>(() => super.isValid,
-              name: '_ReservaStore.isValid'))
-          .value;
+  bool get isValid => (_$isValidComputed ??=
+          Computed<bool>(() => super.isValid, name: '_ReservaStore.isValid'))
+      .value;
   Computed<double>? _$valorTotalReservaComputed;
 
   @override
@@ -86,12 +85,51 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$reservasUsuarioAtom = Atom(name: '_ReservaStore.reservasUsuario');
+
+  @override
+  ObservableList<Reserva> get reservasUsuario {
+    _$reservasUsuarioAtom.reportRead();
+    return super.reservasUsuario;
+  }
+
+  @override
+  set reservasUsuario(ObservableList<Reserva> value) {
+    _$reservasUsuarioAtom.reportWrite(value, super.reservasUsuario, () {
+      super.reservasUsuario = value;
+    });
+  }
+
+  final _$loadingAtom = Atom(name: '_ReservaStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   final _$getAllReservaSAsyncAction =
       AsyncAction('_ReservaStore.getAllReservaS');
 
   @override
   Future<void> getAllReservaS(int evento) {
     return _$getAllReservaSAsyncAction.run(() => super.getAllReservaS(evento));
+  }
+
+  final _$getAllReservasUsuarioAsyncAction =
+      AsyncAction('_ReservaStore.getAllReservasUsuario');
+
+  @override
+  Future<void> getAllReservasUsuario() {
+    return _$getAllReservasUsuarioAsyncAction
+        .run(() => super.getAllReservasUsuario());
   }
 
   final _$_ReservaStoreActionController =
@@ -109,12 +147,25 @@ mixin _$ReservaStore on _ReservaStore, Store {
   }
 
   @override
+  void isLoading(bool value) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.isLoading');
+    try {
+      return super.isLoading(value);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 alfabetoIndex: ${alfabetoIndex},
 reservas: ${reservas},
 reservasAssento: ${reservasAssento},
 assentosSelecionados: ${assentosSelecionados},
+reservasUsuario: ${reservasUsuario},
+loading: ${loading},
 isValid: ${isValid},
 valorTotalReserva: ${valorTotalReserva}
     ''';

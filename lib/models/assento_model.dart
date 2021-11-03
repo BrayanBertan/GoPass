@@ -1,35 +1,20 @@
 class Assento {
   int? id;
-  int? evento_id;
-  int? usuario_id;
-  DateTime? data_reserva;
-  int? confirmada;
-  String? modo_pagamento;
+  int? reserva_id;
+  int? numero;
 
-  Assento(
-      {this.evento_id,
-      this.usuario_id,
-      this.data_reserva,
-      this.confirmada,
-      this.modo_pagamento
-      });
+  Assento({this.reserva_id, this.numero});
 
   Assento.fromMap(Map map) {
-    id             = map['id'];
-    evento_id      = map['evento_id'];
-    usuario_id     = map['usuario_id'];
-    data_reserva   = DateTime.fromMillisecondsSinceEpoch(map['nascimento'] * 1000);
-    confirmada     = map['confirmada'];
-    modo_pagamento = map['modo_pagamento'];
+    id = map['id'];
+    reserva_id = map['reserva_id'];
+    numero = map['numero'];
   }
 
   Map<String, Object?> toMap() {
     Map<String, dynamic>? map = {
-      'evento_id': evento_id,
-      'usuario_id': usuario_id,
-      'data_reserva': ((data_reserva)!.millisecondsSinceEpoch / 1000).round(),
-      'confirmada': confirmada,
-      'modo_pagamento': modo_pagamento
+      'reserva_id': reserva_id,
+      'numero': numero,
     };
     if (id != null) {
       map['id'] = id;

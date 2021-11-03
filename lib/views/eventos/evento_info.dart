@@ -2,9 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/evento_model.dart';
+import 'package:gopass_app/stores/evento_store.dart';
 import 'package:gopass_app/stores/reserva_store.dart';
 import 'package:intl/intl.dart';
+
+EventoStore eventoStore = Modular.get<EventoStore>();
 
 class EventoInfoPage extends StatefulWidget {
   Evento evento;
@@ -43,11 +47,11 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image.file(
-              File(evento.foto!),
+              File(evento.foto ?? ''),
               fit: BoxFit.fitWidth,
               height: 300,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -229,7 +233,14 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
               ),
               child: Observer(builder: (_) {
                 return ElevatedButton(
-                  onPressed: reservaStore.isValid as void Function()?,
+                  onPressed: reservaStore.isValid
+                      ? () {
+                          reservaStore.Reservar().then((value) {
+                            eventoStore.setAbaIndex(1);
+                            Modular.to.pop();
+                          });
+                        }
+                      : null,
                   child: Text(
                     'Reservar R\$ ${reservaStore.valorTotalReserva}',
                     style: const TextStyle(

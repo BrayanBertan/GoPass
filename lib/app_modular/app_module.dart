@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/repositories/assento_repository.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
 import 'package:gopass_app/repositories/evento_repository.dart';
 import 'package:gopass_app/repositories/reserva_repository.dart';
@@ -13,6 +14,7 @@ import 'package:gopass_app/views/cadastro/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/evento_info.dart';
 import 'package:gopass_app/views/eventos/home.dart';
+import 'package:gopass_app/views/eventos/meus_eventos.dart';
 import 'package:gopass_app/views/login_view.dart';
 import 'package:gopass_app/views/splash_screen.dart';
 
@@ -26,9 +28,10 @@ class AppModule extends Module {
         Bind((i) => BancoRepository()),
         Bind((i) => UsuarioRepository()),
         Bind((i) => EventoRepository()),
+        Bind((i) => ReservaRepository()),
+        Bind((i) => AssentoRepository()),
         Bind.singleton((i) => FilterStore()),
         Bind.singleton((i) => ReservaStore()),
-        Bind.singleton((i) => ReservaRepository()),
       ];
 
   @override
@@ -38,6 +41,7 @@ class AppModule extends Module {
         ChildRoute('/cadastro', child: (_, __) => CadastroPage()),
         ChildRoute('/home', child: (_, __) => HomePage()),
         ChildRoute('/cadastro-evento', child: (_, __) => EventoCadastroPage()),
+        ChildRoute('/meus_eventos', child: (_, __) => MeusEventosPage()),
         ChildRoute(
           '/evento-info',
           child: (_, args) => EventoInfoPage(args.data),

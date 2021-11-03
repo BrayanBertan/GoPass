@@ -100,7 +100,7 @@ abstract class _SignupStore with Store {
   }
 
   @computed
-  bool get nomeValid => nome != null && nome!.length > 6;
+  bool get nomeValid => nome != null && nome!.length >= 6;
   String? get nomeError {
     if (nome == null || nomeValid)
       return null;

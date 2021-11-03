@@ -1,14 +1,19 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/models/assento_model.dart';
 import 'package:gopass_app/models/reserva_model.dart';
+import 'package:gopass_app/repositories/assento_repository.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ReservaRepository {
   final br = Modular.get<BancoRepository>();
 
-  Future<Reserva> saveReserva(Reserva reserva) async {
+  Future<Reserva> saveReserva(Reserva reserva, List<int> assentos) async {
     Database dbReserva = await br.db;
     reserva.id = await dbReserva.insert("reservas", reserva.toMap());
+    AssentoRepository assentoRepository = Modular.get<AssentoRepository>();
+    assentos.forEach((element) async => await assentoRepository
+        .saveAssento(Assento(numero: element, reserva_id: reserva.id)));
     return reserva;
   }
 
@@ -19,7 +24,6 @@ class ReservaRepository {
           'id',
           'evento_id',
           'usuario_id',
-          'assento_id',
           'data_reserva',
           'confirmada',
           'modo_pagamento'
@@ -47,15 +51,28 @@ class ReservaRepository {
         where: "id = ?", whereArgs: [reserva.id]);
   }
 
-  Future<List<Reserva>> getAllReserva(int evento) async {
+  Future<List<int>> getAllReserva(int evento) async {
     Database dbReserva = await br.db;
-    List<Map> maps = await dbReserva
-        .rawQuery("SELECT * FROM reservas WHERE evento_id = $evento");
-    List<Reserva> listReserva = [];
-    for (Map m in maps) {
-      listReserva.add(Reserva.fromMap(m));
-    }
-    return listReserva;
+    List<Map> maps = await dbReserva.rawQuery(
+        "SELECT a.numero FROM assentos AS a "
+        "INNER JOIN reservas AS b ON b.id = a.reserva_id WHERE b.evento_id = $evento");
+    List<int> assentos = [];
+    maps.forEach((element) {
+      assentos.add(element['numero']);
+    });
+    return assentos;
+  }
+
+  Future<List<Reserva>> getAllReservasUsuario(int usuario) async {
+    print('repository');
+    Database dbReserva = await br.db;
+    List<Map> maps = await dbReserva.rawQuery(
+        "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto FROM reservas AS a "
+        "INNER JOIN eventos AS b ON b.id = a.evento_id WHERE a.usuario_id = $usuario");
+    List<Reserva> reservas = [];
+    maps.forEach((element) => reservas.add(Reserva.fromMap(element)));
+    print(reservas);
+    return reservas;
   }
 
   Future close() async {
