@@ -3,20 +3,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/evento_model.dart';
+import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/stores/filter_store.dart';
 
 class DialogReserva extends StatefulWidget {
   Evento evento;
-  DialogReserva(this.evento);
+  Reserva reserva;
+  DialogReserva(this.evento, this.reserva);
 
   @override
-  _DialogReservaState createState() => _DialogReservaState(this.evento);
+  _DialogReservaState createState() =>
+      _DialogReservaState(this.evento, this.reserva);
 }
 
 class _DialogReservaState extends State<DialogReserva> {
   FilterStore filterStore = Modular.get<FilterStore>().clone();
   Evento evento;
-  _DialogReservaState(this.evento);
+  Reserva reserva;
+  _DialogReservaState(this.evento, this.reserva);
 
   @override
   void initState() {
@@ -45,7 +49,11 @@ class _DialogReservaState extends State<DialogReserva> {
                     Modular.to.pushNamed('/evento-info', arguments: evento);
                   },
                   child: Text('Dados do evento')),
-              ElevatedButton(onPressed: () {}, child: Text('Dados da reserva'))
+              ElevatedButton(
+                  onPressed: () {
+                    Modular.to.pushNamed('/reserva', arguments: reserva);
+                  },
+                  child: Text('Dados da reserva'))
             ],
           )
         ],

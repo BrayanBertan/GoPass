@@ -45,7 +45,8 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                           showDialog(
                               context: context,
                               builder: (_) {
-                                return DialogReserva(value);
+                                return DialogReserva(
+                                    value, reservaStore.reservasUsuario[index]);
                               });
                         });
                       },
@@ -56,11 +57,14 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                           '${reservaStore.reservasUsuario[index].evento}-${format.format(reservaStore.reservasUsuario[index].data_evento!)}'),
                       trailing: Container(
                         width: 80,
-                        height: 100,
-                        color: reservaStore.reservaStatus(
-                            reservaStore.reservasUsuario[index].data_reserva!,
-                            reservaStore
-                                .reservasUsuario[index].confirmada!)['color'],
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: reservaStore.reservaStatus(
+                                reservaStore
+                                    .reservasUsuario[index].data_reserva!,
+                                reservaStore.reservasUsuario[index]
+                                    .confirmada!)['color'],
+                            borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: EdgeInsets.all(3),
                           child: Column(

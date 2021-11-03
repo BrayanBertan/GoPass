@@ -8,12 +8,16 @@ import 'package:sqflite/sqflite.dart';
 class ReservaRepository {
   final br = Modular.get<BancoRepository>();
 
-  Future<Reserva> saveReserva(Reserva reserva, List<int> assentos) async {
+  Future<Reserva> saveReserva(
+      Reserva reserva, List<Map<String, dynamic>> assentos) async {
     Database dbReserva = await br.db;
     reserva.id = await dbReserva.insert("reservas", reserva.toMap());
     AssentoRepository assentoRepository = Modular.get<AssentoRepository>();
-    assentos.forEach((element) async => await assentoRepository
-        .saveAssento(Assento(numero: element, reserva_id: reserva.id)));
+    assentos.forEach((element) async => await assentoRepository.saveAssento(
+        Assento(
+            numero: element['assento'],
+            reserva_id: reserva.id,
+            fileira: element['linha'])));
     return reserva;
   }
 
@@ -64,7 +68,6 @@ class ReservaRepository {
   }
 
   Future<List<Reserva>> getAllReservasUsuario(int usuario) async {
-    print('repository');
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.rawQuery(
         "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto FROM reservas AS a "
@@ -73,6 +76,16 @@ class ReservaRepository {
     maps.forEach((element) => reservas.add(Reserva.fromMap(element)));
     print(reservas);
     return reservas;
+  }
+
+  Future<List<Assento>> getAllAssentos(int reserva) async {
+    Database dbReserva = await br.db;
+    List<Map> maps = await dbReserva
+        .rawQuery("SELECT * FROM assentos WHERE reserva_id = $reserva");
+    List<Assento> assentos = [];
+    maps.forEach((element) => assentos.add(Assento.fromMap(element)));
+
+    return assentos;
   }
 
   Future close() async {

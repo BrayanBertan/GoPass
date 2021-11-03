@@ -15,6 +15,7 @@ import 'package:gopass_app/views/eventos/cadastro_view.dart';
 import 'package:gopass_app/views/eventos/evento_info.dart';
 import 'package:gopass_app/views/eventos/home.dart';
 import 'package:gopass_app/views/eventos/meus_eventos.dart';
+import 'package:gopass_app/views/eventos/reservas_view.dart';
 import 'package:gopass_app/views/login_view.dart';
 import 'package:gopass_app/views/splash_screen.dart';
 
@@ -42,6 +43,7 @@ class AppModule extends Module {
         ChildRoute('/home', child: (_, __) => HomePage()),
         ChildRoute('/cadastro-evento', child: (_, __) => EventoCadastroPage()),
         ChildRoute('/meus_eventos', child: (_, __) => MeusEventosPage()),
+        ChildRoute('/reserva', child: (_, args) => ReservaPage(args.data)),
         ChildRoute(
           '/evento-info',
           child: (_, args) => EventoInfoPage(args.data),

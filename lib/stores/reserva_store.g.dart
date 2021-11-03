@@ -85,6 +85,38 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$testeAtom = Atom(name: '_ReservaStore.teste');
+
+  @override
+  ObservableList<Map<String, dynamic>> get teste {
+    _$testeAtom.reportRead();
+    return super.teste;
+  }
+
+  @override
+  set teste(ObservableList<Map<String, dynamic>> value) {
+    _$testeAtom.reportWrite(value, super.teste, () {
+      super.teste = value;
+    });
+  }
+
+  final _$assentosReservaAtualAtom =
+      Atom(name: '_ReservaStore.assentosReservaAtual');
+
+  @override
+  ObservableList<Assento> get assentosReservaAtual {
+    _$assentosReservaAtualAtom.reportRead();
+    return super.assentosReservaAtual;
+  }
+
+  @override
+  set assentosReservaAtual(ObservableList<Assento> value) {
+    _$assentosReservaAtualAtom.reportWrite(value, super.assentosReservaAtual,
+        () {
+      super.assentosReservaAtual = value;
+    });
+  }
+
   final _$reservasUsuarioAtom = Atom(name: '_ReservaStore.reservasUsuario');
 
   @override
@@ -136,11 +168,11 @@ mixin _$ReservaStore on _ReservaStore, Store {
       ActionController(name: '_ReservaStore');
 
   @override
-  dynamic setAssentosSelecionados(int assento) {
+  dynamic setAssentosSelecionados(int assento, String linha) {
     final _$actionInfo = _$_ReservaStoreActionController.startAction(
         name: '_ReservaStore.setAssentosSelecionados');
     try {
-      return super.setAssentosSelecionados(assento);
+      return super.setAssentosSelecionados(assento, linha);
     } finally {
       _$_ReservaStoreActionController.endAction(_$actionInfo);
     }
@@ -164,6 +196,8 @@ alfabetoIndex: ${alfabetoIndex},
 reservas: ${reservas},
 reservasAssento: ${reservasAssento},
 assentosSelecionados: ${assentosSelecionados},
+teste: ${teste},
+assentosReservaAtual: ${assentosReservaAtual},
 reservasUsuario: ${reservasUsuario},
 loading: ${loading},
 isValid: ${isValid},

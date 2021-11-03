@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gopass_app/models/assento_model.dart';
 import 'package:gopass_app/models/evento_model.dart';
 import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/repositories/evento_repository.dart';
@@ -54,12 +55,31 @@ abstract class _ReservaStore with Store {
   @observable
   ObservableList<int> assentosSelecionados = ObservableList<int>();
 
+  @observable
+  ObservableList<Map<String, dynamic>> teste =
+      ObservableList<Map<String, dynamic>>();
+
+  bool checkAssento(int assento) {
+    for (var map in teste) {
+      if (map.containsKey("assento")) {
+        if (map["assento"] == assento) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   @action
-  setAssentosSelecionados(int assento) {
-    if (assentosSelecionados.contains(assento))
+  setAssentosSelecionados(int assento, String linha) {
+    print(linha);
+    if (assentosSelecionados.contains(assento)) {
       assentosSelecionados.remove(assento);
-    else
+      teste.removeWhere((element) => element['assento'] == assento);
+    } else {
       assentosSelecionados.add(assento);
+      teste.add({'linha': linha, 'assento': assento});
+    }
   }
 
   int numeroGrid(int lotacao) {
@@ -76,7 +96,22 @@ abstract class _ReservaStore with Store {
             data_reserva: DateTime.now(),
             evento_id: 1,
             modo_pagamento: 'boleto'),
-        assentosSelecionados);
+        teste);
+  }
+
+  @observable
+  ObservableList<Assento> assentosReservaAtual = ObservableList<Assento>();
+
+  Future<void> getAllAssentosReserva(int id) async {
+    try {
+      //loading = true;
+      var retorno = await reservaRepository.getAllAssentos(id);
+      assentosReservaAtual.clear();
+      assentosReservaAtual.addAll(retorno);
+      // loading = false;
+    } catch (e) {
+      print(e);
+    }
   }
 
   @action

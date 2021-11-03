@@ -173,6 +173,8 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
                                   } else {
                                     assento++;
                                     int gambiarra = assento;
+                                    String gambiarra2 = reservaStore
+                                        .alfabeto[reservaStore.alfabetoIndex];
                                     return Tooltip(
                                       message:
                                           '${reservaStore.alfabeto[reservaStore.alfabetoIndex]}$assento',
@@ -182,10 +184,10 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
                                             onTap: !reservaStore.reservasAssento
                                                     .contains(gambiarra)
                                                 ? () {
-                                                    print(gambiarra);
                                                     reservaStore
                                                         .setAssentosSelecionados(
-                                                            gambiarra);
+                                                            gambiarra,
+                                                            gambiarra2);
                                                   }
                                                 : null,
                                             child: Container(
@@ -195,8 +197,7 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
                                                           .contains(gambiarra)
                                                       ? Colors.grey[500]
                                                       : reservaStore
-                                                              .assentosSelecionados
-                                                              .contains(
+                                                              .checkAssento(
                                                                   gambiarra)
                                                           ? Colors
                                                               .lightGreenAccent
