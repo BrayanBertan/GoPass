@@ -162,9 +162,25 @@ abstract class _ReservaStore with Store {
   @action
   void isLoading(bool value) => loading = value;
 
+  @observable
+  bool loadingPagamento = false;
+
+  @action
+  void isLoadingPagamento(bool value) => loadingPagamento = value;
+
   Future<Evento>? getEvento(int id) async {
     var evento = await eventoRepository.getEvento(id);
     return evento!;
+  }
+
+  List<String> modos_pagamento = [
+    'Cartão de crédito',
+    'Cartão de debito',
+    'Pix'
+  ];
+  Future<void> updatePagamento(Reserva reserva) async {
+    reserva.modo_pagamento = modos_pagamento[modoDePagamento];
+    var evento = await reservaRepository.updateReserva(reserva);
   }
 
   @observable

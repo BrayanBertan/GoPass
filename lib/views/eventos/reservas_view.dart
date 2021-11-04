@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/stores/reserva_store.dart';
+import 'package:gopass_app/views/eventos/componentes/dialog_ingresso.dart';
 import 'package:gopass_app/views/eventos/componentes/dialog_pagamento.dart';
 import 'package:gopass_app/views/eventos/meus_eventos.dart';
 
@@ -72,7 +73,15 @@ class _ReservaPageState extends State<ReservaPage> {
                                       Text('Ingresso ->'),
                                       IconButton(
                                           onPressed: reserva.confirmada == 1
-                                              ? () {}
+                                              ? () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return DialogIngresso(
+                                                            reserva,
+                                                            '${reservaStore.assentosReservaAtual[index].fileira}${reservaStore.assentosReservaAtual[index].numero}');
+                                                      });
+                                                }
                                               : null,
                                           icon: Icon(Icons.qr_code))
                                     ],
@@ -104,6 +113,8 @@ class _ReservaPageState extends State<ReservaPage> {
                                     }).then((value) {
                                   setState(() {
                                     reserva.confirmada = value ?? 0;
+                                    if (reserva.confirmada == 1)
+                                      reservaStore.updatePagamento(reserva);
                                   });
                                 });
                               }

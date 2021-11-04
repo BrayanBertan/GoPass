@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/evento_model.dart';
 import 'package:gopass_app/models/reserva_model.dart';
-import 'package:gopass_app/stores/filter_store.dart';
 
 class DialogReserva extends StatefulWidget {
   Evento evento;
@@ -17,14 +16,12 @@ class DialogReserva extends StatefulWidget {
 }
 
 class _DialogReservaState extends State<DialogReserva> {
-  FilterStore filterStore = Modular.get<FilterStore>().clone();
   Evento evento;
   Reserva reserva;
   _DialogReservaState(this.evento, this.reserva);
 
   @override
   void initState() {
-    filterStore.getAllCategorias();
     super.initState();
   }
 

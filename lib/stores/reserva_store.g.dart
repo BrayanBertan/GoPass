@@ -147,6 +147,21 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$loadingPagamentoAtom = Atom(name: '_ReservaStore.loadingPagamento');
+
+  @override
+  bool get loadingPagamento {
+    _$loadingPagamentoAtom.reportRead();
+    return super.loadingPagamento;
+  }
+
+  @override
+  set loadingPagamento(bool value) {
+    _$loadingPagamentoAtom.reportWrite(value, super.loadingPagamento, () {
+      super.loadingPagamento = value;
+    });
+  }
+
   final _$modoDePagamentoAtom = Atom(name: '_ReservaStore.modoDePagamento');
 
   @override
@@ -205,6 +220,17 @@ mixin _$ReservaStore on _ReservaStore, Store {
   }
 
   @override
+  void isLoadingPagamento(bool value) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.isLoadingPagamento');
+    try {
+      return super.isLoadingPagamento(value);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setModoDePagamento(int value) {
     final _$actionInfo = _$_ReservaStoreActionController.startAction(
         name: '_ReservaStore.setModoDePagamento');
@@ -226,6 +252,7 @@ teste: ${teste},
 assentosReservaAtual: ${assentosReservaAtual},
 reservasUsuario: ${reservasUsuario},
 loading: ${loading},
+loadingPagamento: ${loadingPagamento},
 modoDePagamento: ${modoDePagamento},
 isValid: ${isValid},
 valorTotalReserva: ${valorTotalReserva}

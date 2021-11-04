@@ -43,11 +43,13 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                                 reservaStore.reservasUsuario[index].evento_id!)!
                             .then((value) {
                           showDialog(
-                              context: context,
-                              builder: (_) {
-                                return DialogReserva(
-                                    value, reservaStore.reservasUsuario[index]);
-                              });
+                                  context: context,
+                                  builder: (_) {
+                                    return DialogReserva(value,
+                                        reservaStore.reservasUsuario[index]);
+                                  })
+                              .then((value) =>
+                                  reservaStore.getAllReservasUsuario());
                         });
                       },
                       leading: Image.file(

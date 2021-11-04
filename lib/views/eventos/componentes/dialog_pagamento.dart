@@ -125,27 +125,34 @@ class _DialogPagamentoState extends State<DialogPagamento> {
             height: 5,
           ),
           Container(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            width: double.infinity,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Observer(builder: (_) {
-              return ElevatedButton(
-                onPressed: () {
-                  Modular.to.pop(1);
-                },
-                child: const Text(
-                  'Pagar',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-              );
-            }),
-          )
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              width: double.infinity,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(0),
+              ),
+              child: Observer(builder: (_) {
+                return reservaStore.loadingPagamento != true
+                    ? ElevatedButton(
+                        onPressed: () {
+                          reservaStore.isLoadingPagamento(true);
+                          Future.delayed(Duration(seconds: 1)).then((value) {
+                            reservaStore.isLoadingPagamento(false);
+                            Modular.to.pop(1);
+                          });
+                        },
+                        child: const Text(
+                          'Pagar',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      );
+              }))
         ],
       ),
     ));
