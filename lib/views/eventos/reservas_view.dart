@@ -100,8 +100,8 @@ class _ReservaPageState extends State<ReservaPage> {
                     child: Observer(builder: (_) {
                       return ElevatedButton(
                         onPressed: (reserva.confirmada == 0 &&
-                                reserva.data_reserva!
-                                        .difference(DateTime.now())
+                                DateTime.now()
+                                        .difference(reserva.data_reserva!)
                                         .inHours <
                                     24)
                             ? () {

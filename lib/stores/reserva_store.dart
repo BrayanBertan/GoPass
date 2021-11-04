@@ -142,7 +142,7 @@ abstract class _ReservaStore with Store {
   Map<String, dynamic> reservaStatus(DateTime reserva, int status) {
     if (status == 1)
       return {'status': 'Confirmado', 'color': Colors.green};
-    else if (reserva.difference(DateTime.now()).inHours >= 24)
+    else if (DateTime.now().difference(reserva).inHours >= 24)
       return {'status': 'Cancelado', 'color': Colors.grey};
     else
       return {'status': 'Pendente', 'color': Colors.yellow};

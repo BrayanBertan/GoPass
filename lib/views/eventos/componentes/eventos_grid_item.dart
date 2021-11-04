@@ -28,15 +28,23 @@ class _EventosGridItemState extends State<EventosGridItem> {
         elevation: 8,
         child: Scaffold(
           bottomNavigationBar: ElevatedButton(
-              onPressed: () {
-                if (usuarioStore.usuario!.tipo != 'C') {
-                  eventosStore.setEvento(this.index);
-                  eventosStore.setAbaIndex(1);
-                } else
-                  Modular.to.pushNamed('/evento-info', arguments: this.index);
-              },
+              onPressed:
+                  this.index.data_evento.difference(DateTime.now()).inHours > 24
+                      ? () {
+                          if (usuarioStore.usuario!.tipo != 'C') {
+                            eventosStore.setEvento(this.index);
+                            eventosStore.setAbaIndex(1);
+                          } else
+                            Modular.to.pushNamed('/evento-info',
+                                arguments: this.index);
+                        }
+                      : null,
               child: Text(
-                  usuarioStore.usuario!.tipo == 'C' ? 'Visualizar' : 'Editar')),
+                  this.index.data_evento.difference(DateTime.now()).inHours < 24
+                      ? 'Encerrado'
+                      : usuarioStore.usuario!.tipo == 'C'
+                          ? 'Visualizar'
+                          : 'Editar')),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

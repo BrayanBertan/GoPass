@@ -50,7 +50,9 @@ class ReservaRepository {
 
   Future<int> updateReserva(Reserva reserva) async {
     Database dbReserva = await br.db;
-
+    reserva.modo_pagamento = '';
+    reserva.confirmada = 0;
+    reserva.data_reserva = DateTime.now().subtract(Duration(hours: 72));
     return await dbReserva.update("reservas", reserva.toMap(),
         where: "id = ?", whereArgs: [reserva.id]);
   }
@@ -59,7 +61,7 @@ class ReservaRepository {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.rawQuery(
         "SELECT a.numero FROM assentos AS a "
-        "INNER JOIN reservas AS b ON b.id = a.reserva_id WHERE b.evento_id = $evento");
+        "INNER JOIN reservas AS b ON b.id = a.reserva_id WHERE b.evento_id = $evento  AND (julianday(DATETIME('now', '-3 hour')) - julianday(datetime(b.data_reserva, 'unixepoch'))) < 1");
     List<int> assentos = [];
     maps.forEach((element) {
       assentos.add(element['numero']);
@@ -74,7 +76,7 @@ class ReservaRepository {
         "INNER JOIN eventos AS b ON b.id = a.evento_id WHERE a.usuario_id = $usuario ORDER BY a.confirmada");
     List<Reserva> reservas = [];
     maps.forEach((element) => reservas.add(Reserva.fromMap(element)));
-    print(reservas);
+    print('reservas $maps');
     return reservas;
   }
 
