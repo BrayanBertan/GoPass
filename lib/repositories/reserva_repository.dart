@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/assento_model.dart';
+import 'package:gopass_app/models/grafico_model.dart';
 import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/repositories/assento_repository.dart';
 import 'package:gopass_app/repositories/banco_repository.dart';
@@ -88,6 +89,26 @@ class ReservaRepository {
     maps.forEach((element) => assentos.add(Assento.fromMap(element)));
 
     return assentos;
+  }
+
+  Future<List<GraficoBarra>> getGrafico(int evento) async {
+    Database dbReserva = await br.db;
+    List<Map> maps = await dbReserva.rawQuery(
+        "SELECT confirmada,COUNT(*) AS qtd,data_reserva FROM reservas WHERE evento_id = $evento GROUP BY confirmada,data_reserva ORDER BY confirmada DESC");
+    List<GraficoBarra> graficos = [];
+    List<GraficoBarra> graficos2 = [];
+    maps.forEach((element) => graficos.add(GraficoBarra.fromMap(element)));
+
+    late Iterable<GraficoBarra> contain;
+    graficos.forEach((i) {
+      contain = graficos.where((j) => j.eixoX == i.eixoX);
+      if (contain.isNotEmpty &&
+          graficos2.where((j) => j.eixoX == i.eixoX).isEmpty) {
+        graficos2.add(GraficoBarra(contain.toList()[0].eixoX, contain.length));
+      }
+    });
+    print(graficos2);
+    return graficos2;
   }
 
   Future close() async {

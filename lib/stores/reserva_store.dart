@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/assento_model.dart';
 import 'package:gopass_app/models/evento_model.dart';
+import 'package:gopass_app/models/grafico_model.dart';
 import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/repositories/evento_repository.dart';
 import 'package:gopass_app/repositories/reserva_repository.dart';
@@ -133,6 +134,63 @@ abstract class _ReservaStore with Store {
           .getAllReservasUsuario(usuarioStore.usuario!.id!);
       reservasUsuario.clear();
       reservasUsuario.addAll(retorno);
+      loading = false;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @observable
+  ObservableList<GraficoBarra> grafico = ObservableList<GraficoBarra>();
+
+  @observable
+  int quantidade = 0;
+  @action
+  addQuantidade(int qtd) => quantidade += qtd;
+
+  @observable
+  int quantidadeConfirmado = 0;
+  @action
+  addQuantidadeConfirmado(int qtd) => quantidadeConfirmado += qtd;
+
+  @observable
+  int quantidadePendente = 0;
+  @action
+  addQuantidadePendente(int qtd) => quantidadePendente += qtd;
+
+  @observable
+  int quantidadeCancelado = 0;
+  @action
+  addQuantidadeCancelado(int qtd) => quantidadeCancelado += qtd;
+
+  @action
+  resetaQuantidade() {
+    quantidade = 0;
+    quantidadeCancelado = 0;
+    quantidadeConfirmado = 0;
+    quantidadePendente = 0;
+  }
+
+  @action
+  Future<void> getGrafico(int id) async {
+    try {
+      loading = true;
+      var retorno = await reservaRepository.getGrafico(id);
+      grafico.clear();
+      resetaQuantidade();
+      grafico.addAll(retorno);
+      grafico.forEach((element) {
+        print(element.eixoX);
+        addQuantidade(element.eixoY!);
+        switch (element.eixoX) {
+          case 'pendente':
+            return addQuantidadePendente(element.eixoY!);
+          case 'confirmado':
+            return addQuantidadeConfirmado(element.eixoY!);
+          default:
+            return addQuantidadeCancelado(element.eixoY!);
+        }
+      });
       loading = false;
     } catch (e) {
       print(e);
