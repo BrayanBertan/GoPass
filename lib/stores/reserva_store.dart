@@ -166,4 +166,10 @@ abstract class _ReservaStore with Store {
     var evento = await eventoRepository.getEvento(id);
     return evento!;
   }
+
+  @observable
+  int modoDePagamento = 0;
+
+  @action
+  void setModoDePagamento(int value) => modoDePagamento = value;
 }

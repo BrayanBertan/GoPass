@@ -9,6 +9,7 @@ class Reserva {
   DateTime? data_evento;
   double? valor;
   String? foto;
+  int? qtde_ingressos;
 
   Reserva(
       {this.evento_id,
@@ -30,6 +31,7 @@ class Reserva {
         DateTime.fromMillisecondsSinceEpoch(map['data_evento'] * 1000);
     evento = map['evento'];
     valor = map['valor'];
+    qtde_ingressos = map['qtde_ingressos'];
   }
 
   Map<String, Object?> toMap() {

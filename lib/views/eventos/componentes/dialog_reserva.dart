@@ -55,7 +55,7 @@ class _DialogReservaState extends State<DialogReserva> {
                   },
                   child: Text('Dados da reserva'))
             ],
-          )
+          ),
         ],
       ),
     ));

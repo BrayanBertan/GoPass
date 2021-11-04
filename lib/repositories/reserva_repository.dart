@@ -70,7 +70,7 @@ class ReservaRepository {
   Future<List<Reserva>> getAllReservasUsuario(int usuario) async {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.rawQuery(
-        "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto FROM reservas AS a "
+        "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto,(SELECT COUNT(*) FROM assentos WHERE reserva_id = a.id) AS qtde_ingressos FROM reservas AS a "
         "INNER JOIN eventos AS b ON b.id = a.evento_id WHERE a.usuario_id = $usuario");
     List<Reserva> reservas = [];
     maps.forEach((element) => reservas.add(Reserva.fromMap(element)));

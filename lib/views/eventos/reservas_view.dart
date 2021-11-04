@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/reserva_model.dart';
 import 'package:gopass_app/stores/reserva_store.dart';
+import 'package:gopass_app/views/eventos/componentes/dialog_pagamento.dart';
 import 'package:gopass_app/views/eventos/meus_eventos.dart';
 
 ReservaStore eventoStore = Modular.get<ReservaStore>();
@@ -70,14 +71,70 @@ class _ReservaPageState extends State<ReservaPage> {
                                     children: [
                                       Text('Ingresso ->'),
                                       IconButton(
-                                          onPressed: () {},
+                                          onPressed: reserva.confirmada == 1
+                                              ? () {}
+                                              : null,
                                           icon: Icon(Icons.qr_code))
                                     ],
                                   ),
                                 );
                               });
                         },
-                      ))
+                      )),
+                  Container(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    width: double.infinity,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: Observer(builder: (_) {
+                      return ElevatedButton(
+                        onPressed: (reserva.confirmada == 0 &&
+                                reserva.data_reserva!
+                                        .difference(DateTime.now())
+                                        .inHours <
+                                    24)
+                            ? () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return DialogPagamento(
+                                          reserva, reservaStore);
+                                    }).then((value) {
+                                  setState(() {
+                                    reserva.confirmada = value ?? 0;
+                                  });
+                                });
+                              }
+                            : null,
+                        child: Text(
+                          'Pagar R\$${(reserva.valor! * reserva.qtde_ingressos!).toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                  ListTile(
+                    leading: Text(
+                        'Pagamento ${reservaStore.reservaStatus(reserva.data_reserva!, reserva.confirmada!)['status']}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        )),
+                    title: Container(
+                      width: 5,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: reservaStore.reservaStatus(
+                              reserva.data_reserva!,
+                              reserva.confirmada!)['color'],
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
+                  )
                 ],
               ),
             )
