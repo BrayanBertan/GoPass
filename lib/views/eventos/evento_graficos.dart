@@ -26,7 +26,7 @@ class _EventoGraficosPageState extends State<EventoGraficosPage> {
   static List<charts.Series<GraficoBarra, String>> seriesgrafico = [
     charts.Series<GraficoBarra, String>(
       id: 'graficoId',
-      colorFn: (var segment, __) {
+      colorFn: (GraficoBarra segment, __) {
         switch (segment.eixoX) {
           case 'pendente':
             return charts.MaterialPalette.yellow.shadeDefault;
