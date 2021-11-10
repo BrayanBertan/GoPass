@@ -10,7 +10,7 @@ class GraficoBarra {
         : DateTime.now()
                     .difference(DateTime.fromMillisecondsSinceEpoch(
                         map['data_reserva'] * 1000))
-                    .inHours <
+                    .inHours >
                 24
             ? 'cancelado'
             : 'pendente';

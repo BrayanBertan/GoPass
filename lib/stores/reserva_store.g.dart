@@ -132,6 +132,85 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$graficoAtom = Atom(name: '_ReservaStore.grafico');
+
+  @override
+  ObservableList<GraficoBarra> get grafico {
+    _$graficoAtom.reportRead();
+    return super.grafico;
+  }
+
+  @override
+  set grafico(ObservableList<GraficoBarra> value) {
+    _$graficoAtom.reportWrite(value, super.grafico, () {
+      super.grafico = value;
+    });
+  }
+
+  final _$quantidadeAtom = Atom(name: '_ReservaStore.quantidade');
+
+  @override
+  int get quantidade {
+    _$quantidadeAtom.reportRead();
+    return super.quantidade;
+  }
+
+  @override
+  set quantidade(int value) {
+    _$quantidadeAtom.reportWrite(value, super.quantidade, () {
+      super.quantidade = value;
+    });
+  }
+
+  final _$quantidadeConfirmadoAtom =
+      Atom(name: '_ReservaStore.quantidadeConfirmado');
+
+  @override
+  int get quantidadeConfirmado {
+    _$quantidadeConfirmadoAtom.reportRead();
+    return super.quantidadeConfirmado;
+  }
+
+  @override
+  set quantidadeConfirmado(int value) {
+    _$quantidadeConfirmadoAtom.reportWrite(value, super.quantidadeConfirmado,
+        () {
+      super.quantidadeConfirmado = value;
+    });
+  }
+
+  final _$quantidadePendenteAtom =
+      Atom(name: '_ReservaStore.quantidadePendente');
+
+  @override
+  int get quantidadePendente {
+    _$quantidadePendenteAtom.reportRead();
+    return super.quantidadePendente;
+  }
+
+  @override
+  set quantidadePendente(int value) {
+    _$quantidadePendenteAtom.reportWrite(value, super.quantidadePendente, () {
+      super.quantidadePendente = value;
+    });
+  }
+
+  final _$quantidadeCanceladoAtom =
+      Atom(name: '_ReservaStore.quantidadeCancelado');
+
+  @override
+  int get quantidadeCancelado {
+    _$quantidadeCanceladoAtom.reportRead();
+    return super.quantidadeCancelado;
+  }
+
+  @override
+  set quantidadeCancelado(int value) {
+    _$quantidadeCanceladoAtom.reportWrite(value, super.quantidadeCancelado, () {
+      super.quantidadeCancelado = value;
+    });
+  }
+
   final _$loadingAtom = Atom(name: '_ReservaStore.loading');
 
   @override
@@ -194,6 +273,13 @@ mixin _$ReservaStore on _ReservaStore, Store {
         .run(() => super.getAllReservasUsuario());
   }
 
+  final _$getGraficoAsyncAction = AsyncAction('_ReservaStore.getGrafico');
+
+  @override
+  Future<void> getGrafico(int id) {
+    return _$getGraficoAsyncAction.run(() => super.getGrafico(id));
+  }
+
   final _$_ReservaStoreActionController =
       ActionController(name: '_ReservaStore');
 
@@ -203,6 +289,61 @@ mixin _$ReservaStore on _ReservaStore, Store {
         name: '_ReservaStore.setAssentosSelecionados');
     try {
       return super.setAssentosSelecionados(assento, linha);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addQuantidade(int qtd) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.addQuantidade');
+    try {
+      return super.addQuantidade(qtd);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addQuantidadeConfirmado(int qtd) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.addQuantidadeConfirmado');
+    try {
+      return super.addQuantidadeConfirmado(qtd);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addQuantidadePendente(int qtd) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.addQuantidadePendente');
+    try {
+      return super.addQuantidadePendente(qtd);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addQuantidadeCancelado(int qtd) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.addQuantidadeCancelado');
+    try {
+      return super.addQuantidadeCancelado(qtd);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic resetaQuantidade() {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.resetaQuantidade');
+    try {
+      return super.resetaQuantidade();
     } finally {
       _$_ReservaStoreActionController.endAction(_$actionInfo);
     }
@@ -251,6 +392,11 @@ assentosSelecionados: ${assentosSelecionados},
 teste: ${teste},
 assentosReservaAtual: ${assentosReservaAtual},
 reservasUsuario: ${reservasUsuario},
+grafico: ${grafico},
+quantidade: ${quantidade},
+quantidadeConfirmado: ${quantidadeConfirmado},
+quantidadePendente: ${quantidadePendente},
+quantidadeCancelado: ${quantidadeCancelado},
 loading: ${loading},
 loadingPagamento: ${loadingPagamento},
 modoDePagamento: ${modoDePagamento},

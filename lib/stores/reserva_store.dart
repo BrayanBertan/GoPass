@@ -121,6 +121,7 @@ abstract class _ReservaStore with Store {
     var retorno = await reservaRepository.getAllReserva(evento);
     reservasAssento.clear();
     reservasAssento.addAll(retorno);
+    print(reservasAssento);
   }
 
   @observable
@@ -238,6 +239,8 @@ abstract class _ReservaStore with Store {
   ];
   Future<void> updatePagamento(Reserva reserva) async {
     reserva.modo_pagamento = modos_pagamento[modoDePagamento];
+    print('reservaaa ${reserva.modo_pagamento}');
+    print('reservaaa ${reserva.confirmada}');
     var evento = await reservaRepository.updateReserva(reserva);
   }
 

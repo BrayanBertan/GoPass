@@ -51,9 +51,9 @@ class ReservaRepository {
 
   Future<int> updateReserva(Reserva reserva) async {
     Database dbReserva = await br.db;
-    reserva.modo_pagamento = '';
-    reserva.confirmada = 0;
-    reserva.data_reserva = DateTime.now().subtract(Duration(hours: 72));
+    // reserva.modo_pagamento = '';
+    // reserva.confirmada = 0;
+    // reserva.data_reserva = DateTime.now().subtract(Duration(hours: 72));
     return await dbReserva.update("reservas", reserva.toMap(),
         where: "id = ?", whereArgs: [reserva.id]);
   }
@@ -98,7 +98,7 @@ class ReservaRepository {
     List<GraficoBarra> graficos = [];
     List<GraficoBarra> graficos2 = [];
     maps.forEach((element) => graficos.add(GraficoBarra.fromMap(element)));
-
+    print(maps);
     late Iterable<GraficoBarra> contain;
     graficos.forEach((i) {
       contain = graficos.where((j) => j.eixoX == i.eixoX);
