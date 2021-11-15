@@ -59,7 +59,7 @@ class EventoRepository {
     if (filter.dataFinal != null) dtFinal = filter.dataFinal!;
 
     String sql =
-        "SELECT a.*,(SELECT COUNT(*) FROM reservas WHERE evento_id = a.id) AS total_vendido FROM eventos AS a WHERE DATETIME(a.data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal' AND a.valor <= ${filter.precoMax}";
+        "SELECT a.*,(SELECT COUNT(*) FROM assentos WHERE reserva_id in (SELECT id FROM reservas WHERE evento_id = a.id AND confirmada = 1)) AS total_vendido FROM eventos AS a WHERE DATETIME(a.data_evento, 'unixepoch')  BETWEEN '$dtInicial' AND '$dtFinal' AND a.valor <= ${filter.precoMax}";
 
     if (search.isNotEmpty) sql = "$sql AND nome LIKE '%$search%'";
 
@@ -75,6 +75,7 @@ class EventoRepository {
     }
 
     List<Map> maps = await dbEvento.rawQuery(sql);
+    print('gambiarra $maps');
     List<Evento> listEvento = [];
     for (Map m in maps) {
       listEvento.add(Evento.fromMap(m));

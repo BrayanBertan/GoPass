@@ -73,7 +73,7 @@ class ReservaRepository {
   Future<List<Reserva>> getAllReservasUsuario(int usuario) async {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.rawQuery(
-        "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto,(SELECT COUNT(*) FROM assentos WHERE reserva_id = a.id) AS qtde_ingressos FROM reservas AS a "
+        "SELECT a.*,b.nome AS evento,b.data_evento,b.valor,b.foto,(SELECT COUNT(*) FROM assentos WHERE reserva_id = a.id) AS qtde_ingressos,(SELECT COUNT(*) FROM assentos WHERE reserva_id in (SELECT id FROM reservas WHERE evento_id = a.evento_id AND confirmada = 1)) AS total_vendido FROM reservas AS a "
         "INNER JOIN eventos AS b ON b.id = a.evento_id WHERE a.usuario_id = $usuario ORDER BY a.confirmada");
     List<Reserva> reservas = [];
     maps.forEach((element) => reservas.add(Reserva.fromMap(element)));
@@ -94,21 +94,14 @@ class ReservaRepository {
   Future<List<GraficoBarra>> getGrafico(int evento) async {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva.rawQuery(
-        "SELECT confirmada,COUNT(*) AS qtd,data_reserva FROM reservas WHERE evento_id = $evento GROUP BY confirmada,data_reserva ORDER BY confirmada DESC");
+        "SELECT a.confirmada,(SELECT COUNT(*) FROM assentos WHERE reserva_id = a.id)  AS  qtd,a.data_reserva FROM reservas AS a WHERE a.evento_id = $evento  ORDER BY a.confirmada DESC");
     List<GraficoBarra> graficos = [];
-    List<GraficoBarra> graficos2 = [];
+
     maps.forEach((element) => graficos.add(GraficoBarra.fromMap(element)));
-    print(maps);
-    late Iterable<GraficoBarra> contain;
-    graficos.forEach((i) {
-      contain = graficos.where((j) => j.eixoX == i.eixoX);
-      if (contain.isNotEmpty &&
-          graficos2.where((j) => j.eixoX == i.eixoX).isEmpty) {
-        graficos2.add(GraficoBarra(contain.toList()[0].eixoX, contain.length));
-      }
-    });
-    print(graficos2);
-    return graficos2;
+
+    // print(graficos);
+    // return [];
+    return graficos;
   }
 
   Future close() async {

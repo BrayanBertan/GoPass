@@ -41,7 +41,9 @@ class _EventosGridItemState extends State<EventosGridItem> {
                       : null,
               child: Text(
                   this.index.data_evento.difference(DateTime.now()).inHours < 24
-                      ? 'Encerrado'
+                      ? this.index.total_vendido < this.index.lotacao_minima
+                          ? 'Cancelado'
+                          : 'Encerrado'
                       : usuarioStore.usuario!.tipo == 'C'
                           ? 'Visualizar'
                           : 'Editar')),

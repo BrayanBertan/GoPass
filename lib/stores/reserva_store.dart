@@ -192,6 +192,14 @@ abstract class _ReservaStore with Store {
             return addQuantidadeCancelado(element.eixoY!);
         }
       });
+      print('antes $grafico');
+      grafico.clear();
+      grafico.addAll([
+        GraficoBarra('confirmado', quantidadeConfirmado),
+        GraficoBarra('pendente', quantidadePendente),
+        GraficoBarra('cancelado', quantidadeCancelado),
+      ]);
+      print('depois $grafico');
       loading = false;
     } catch (e) {
       print(e);

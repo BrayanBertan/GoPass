@@ -10,6 +10,7 @@ class Reserva {
   double? valor;
   String? foto;
   int? qtde_ingressos;
+  int? total_vendido;
 
   Reserva(
       {this.evento_id,
@@ -32,6 +33,7 @@ class Reserva {
     evento = map['evento'];
     valor = map['valor'];
     qtde_ingressos = map['qtde_ingressos'];
+    total_vendido = map['total_vendido'];
   }
 
   Map<String, Object?> toMap() {
