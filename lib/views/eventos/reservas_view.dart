@@ -50,7 +50,7 @@ class _ReservaPageState extends State<ReservaPage> {
             Card(
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Meus Ingressos',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25),
@@ -100,10 +100,16 @@ class _ReservaPageState extends State<ReservaPage> {
                     child: Observer(builder: (_) {
                       return ElevatedButton(
                         onPressed: (reserva.confirmada == 0 &&
-                                DateTime.now()
-                                        .difference(reserva.data_reserva!)
-                                        .inHours <
-                                    24)
+                                    DateTime.now()
+                                            .difference(reserva.data_reserva!)
+                                            .inHours <
+                                        24) &&
+                                !(reserva.data_evento!
+                                            .difference(DateTime.now())
+                                            .inHours <
+                                        24 &&
+                                    reserva.total_vendido! <
+                                        reserva.lotacao_minima!)
                             ? () {
                                 showDialog(
                                     context: context,
@@ -131,7 +137,14 @@ class _ReservaPageState extends State<ReservaPage> {
                   ),
                   ListTile(
                     leading: Text(
-                        'Pagamento ${reservaStore.reservaStatus(reserva.data_reserva!, reserva.confirmada!)['status']}',
+                        (reserva.data_evento!
+                                        .difference(DateTime.now())
+                                        .inHours <
+                                    24 &&
+                                reserva.total_vendido! <
+                                    reserva.lotacao_minima!)
+                            ? 'Evento Cancelado'
+                            : 'Pagamento ${reservaStore.reservaStatus(reserva.data_reserva!, reserva.confirmada!)['status']}',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -140,12 +153,19 @@ class _ReservaPageState extends State<ReservaPage> {
                       width: 5,
                       height: 50,
                       decoration: BoxDecoration(
-                          color: reservaStore.reservaStatus(
-                              reserva.data_reserva!,
-                              reserva.confirmada!)['color'],
+                          color: (reserva.data_evento!
+                                          .difference(DateTime.now())
+                                          .inHours <
+                                      24 &&
+                                  reserva.total_vendido! <
+                                      reserva.lotacao_minima!)
+                              ? Colors.grey
+                              : reservaStore.reservaStatus(
+                                  reserva.data_reserva!,
+                                  reserva.confirmada!)['color'],
                           borderRadius: BorderRadius.circular(50)),
                     ),
-                  )
+                  ),
                 ],
               ),
             )

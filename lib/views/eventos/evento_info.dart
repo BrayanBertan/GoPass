@@ -234,7 +234,11 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
               ),
               child: Observer(builder: (_) {
                 return ElevatedButton(
-                  onPressed: reservaStore.isValid
+                  onPressed: (reservaStore.isValid &&
+                          evento.data_evento!
+                                  .difference(DateTime.now())
+                                  .inHours >
+                              24)
                       ? () {
                           reservaStore.Reservar().then((value) {
                             eventoStore.setAbaIndex(1);

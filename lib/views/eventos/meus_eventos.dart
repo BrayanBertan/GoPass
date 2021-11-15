@@ -61,24 +61,39 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                         width: 80,
                         height: 40,
                         decoration: BoxDecoration(
-                            color: reservaStore.reservaStatus(
-                                reservaStore
-                                    .reservasUsuario[index].data_reserva!,
-                                reservaStore.reservasUsuario[index]
-                                    .confirmada!)['color'],
+                            color: (reservaStore
+                                            .reservasUsuario[index].data_evento!
+                                            .difference(DateTime.now())
+                                            .inHours <
+                                        24 &&
+                                    reservaStore.reservasUsuario[index]
+                                            .total_vendido! <
+                                        reservaStore.reservasUsuario[index]
+                                            .lotacao_minima!)
+                                ? Colors.grey
+                                : reservaStore.reservaStatus(
+                                    reservaStore
+                                        .reservasUsuario[index].data_reserva!,
+                                    reservaStore.reservasUsuario[index]
+                                        .confirmada!)['color'],
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: EdgeInsets.all(3),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text('Pagamento'),
                               Text(
-                                reservaStore.reservaStatus(
-                                    reservaStore
-                                        .reservasUsuario[index].data_reserva!,
-                                    reservaStore.reservasUsuario[index]
-                                        .confirmada!)['status'],
+                                (reservaStore.reservasUsuario[index]
+                                                .data_evento!
+                                                .difference(DateTime.now())
+                                                .inHours <
+                                            24 &&
+                                        reservaStore.reservasUsuario[index]
+                                                .total_vendido! <
+                                            reservaStore.reservasUsuario[index]
+                                                .lotacao_minima!)
+                                    ? 'Evento Cancelado'
+                                    : 'Pagamento ${reservaStore.reservaStatus(reservaStore.reservasUsuario[index].data_reserva!, reservaStore.reservasUsuario[index].confirmada!)['status']}',
                                 textAlign: TextAlign.center,
                               )
                             ],

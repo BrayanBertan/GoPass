@@ -11,6 +11,7 @@ class Reserva {
   String? foto;
   int? qtde_ingressos;
   int? total_vendido;
+  int? lotacao_minima;
 
   Reserva(
       {this.evento_id,
@@ -25,6 +26,7 @@ class Reserva {
     usuario_id = map['usuario_id'];
     confirmada = map['confirmada'];
     modo_pagamento = map['modo_pagamento'];
+    lotacao_minima = map['lotacao_minima'];
     foto = modo_pagamento = map['foto'];
     data_reserva =
         DateTime.fromMillisecondsSinceEpoch(map['data_reserva'] * 1000);
@@ -53,6 +55,6 @@ class Reserva {
   @override
   String toString() {
     // TODO: implement toString
-    return "id: $data_evento";
+    return "id: $total_vendido";
   }
 }

@@ -42,9 +42,15 @@ class _DialogReservaState extends State<DialogReserva> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    Modular.to.pushNamed('/evento-info', arguments: evento);
-                  },
+                  onPressed:
+                      (evento.data_evento!.difference(DateTime.now()).inHours >
+                                  24 &&
+                              reserva.total_vendido! < evento.lotacao_minima!)
+                          ? () {
+                              Modular.to
+                                  .pushNamed('/evento-info', arguments: evento);
+                            }
+                          : null,
                   child: Text('Dados do evento')),
               ElevatedButton(
                   onPressed: () {
