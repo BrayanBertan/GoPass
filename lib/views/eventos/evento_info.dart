@@ -240,7 +240,7 @@ class _EventoInfoPageState extends State<EventoInfoPage> {
                                   .inHours >
                               24)
                       ? () {
-                          reservaStore.Reservar().then((value) {
+                          reservaStore.Reservar(evento).then((value) {
                             eventoStore.setAbaIndex(1);
                             Modular.to.pop();
                           });

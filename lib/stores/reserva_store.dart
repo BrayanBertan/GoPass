@@ -89,13 +89,13 @@ abstract class _ReservaStore with Store {
         : (lotacao + int.parse((lotacao / 12).toStringAsFixed(0)) + 2);
   }
 
-  Future<void> Reservar() async {
+  Future<void> Reservar(Evento evento) async {
     reservaRepository.saveReserva(
         Reserva(
             usuario_id: Modular.get<UsuarioStore>().usuario!.id,
             confirmada: 0,
             data_reserva: DateTime.now(),
-            evento_id: 1,
+            evento_id: evento.id,
             modo_pagamento: 'boleto'),
         teste);
   }

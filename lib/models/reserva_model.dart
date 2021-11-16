@@ -55,6 +55,6 @@ class Reserva {
   @override
   String toString() {
     // TODO: implement toString
-    return "id: $total_vendido";
+    return "id: $id";
   }
 }

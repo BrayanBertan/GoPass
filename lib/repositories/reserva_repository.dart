@@ -19,6 +19,7 @@ class ReservaRepository {
             numero: element['assento'],
             reserva_id: reserva.id,
             fileira: element['linha'])));
+    print('id ${reserva.id}');
     return reserva;
   }
 
