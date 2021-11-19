@@ -89,8 +89,7 @@ abstract class _EventoStore with Store {
   DateTime? dataEvento = DateTime.now().subtract(Duration(days: 7));
 
   @observable
-  ObservableList<Categoria> categorias =
-      [Categoria(id: 0, nome: '')].asObservable();
+  ObservableList<Categoria> categorias = ObservableList<Categoria>();
 
   ObservableList<Evento>? eventos = ObservableList<Evento>();
 

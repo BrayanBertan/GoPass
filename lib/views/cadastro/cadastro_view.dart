@@ -141,12 +141,13 @@ class _CadastroPageState extends State<CadastroPage> {
                           return GestureDetector(
                             onTap: () async {
                               signupStore.nascimento = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime.now(),
-                                locale: const Locale("pt"),
-                              );
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime.now(),
+                                    locale: const Locale("pt"),
+                                  ) ??
+                                  DateTime.now();
                             },
                             child: Card(
                               child: ListTile(
