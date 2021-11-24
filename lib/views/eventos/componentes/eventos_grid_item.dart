@@ -31,7 +31,8 @@ class _EventosGridItemState extends State<EventosGridItem> {
               onPressed:
                   this.index.data_evento.difference(DateTime.now()).inHours > 24
                       ? () {
-                          if (usuarioStore.usuario!.tipo != 'C') {
+                          if (usuarioStore.usuario == null ||
+                              usuarioStore.usuario!.tipo != 'C') {
                             eventosStore.setEvento(this.index);
                             eventosStore.setAbaIndex(1);
                           } else
@@ -44,7 +45,8 @@ class _EventosGridItemState extends State<EventosGridItem> {
                       ? this.index.total_vendido < this.index.lotacao_minima
                           ? 'Cancelado'
                           : 'Encerrado'
-                      : usuarioStore.usuario!.tipo == 'C'
+                      : usuarioStore.usuario == null ||
+                              usuarioStore.usuario!.tipo == 'C'
                           ? 'Visualizar'
                           : 'Editar')),
           body: Column(
@@ -84,7 +86,8 @@ class _EventosGridItemState extends State<EventosGridItem> {
                       ),
                     ),
                   ),
-                  usuarioStore.usuario!.tipo == 'A'
+                  usuarioStore.usuario == null ||
+                          usuarioStore.usuario!.tipo == 'A'
                       ? IconButton(
                           onPressed: () {
                             Modular.to

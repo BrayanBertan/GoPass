@@ -82,6 +82,14 @@ class ReservaRepository {
     return reservas;
   }
 
+  Future<int> getFidelidade(int usuario) async {
+    Database dbReserva = await br.db;
+    List<Map> maps = await dbReserva.rawQuery(
+        "SELECT COUNT(*) as compras FROM reservas WHERE confirmada = 1 AND usuario_id = $usuario");
+
+    return maps[0]['compras'];
+  }
+
   Future<List<Assento>> getAllAssentos(int reserva) async {
     Database dbReserva = await br.db;
     List<Map> maps = await dbReserva

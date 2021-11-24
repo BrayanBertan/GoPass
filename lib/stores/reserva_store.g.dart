@@ -117,6 +117,21 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$fidelidadeAtom = Atom(name: '_ReservaStore.fidelidade');
+
+  @override
+  int get fidelidade {
+    _$fidelidadeAtom.reportRead();
+    return super.fidelidade;
+  }
+
+  @override
+  set fidelidade(int value) {
+    _$fidelidadeAtom.reportWrite(value, super.fidelidade, () {
+      super.fidelidade = value;
+    });
+  }
+
   final _$reservasUsuarioAtom = Atom(name: '_ReservaStore.reservasUsuario');
 
   @override
@@ -256,6 +271,21 @@ mixin _$ReservaStore on _ReservaStore, Store {
     });
   }
 
+  final _$descontoAtom = Atom(name: '_ReservaStore.desconto');
+
+  @override
+  double get desconto {
+    _$descontoAtom.reportRead();
+    return super.desconto;
+  }
+
+  @override
+  set desconto(double value) {
+    _$descontoAtom.reportWrite(value, super.desconto, () {
+      super.desconto = value;
+    });
+  }
+
   final _$getAllReservaSAsyncAction =
       AsyncAction('_ReservaStore.getAllReservaS');
 
@@ -372,11 +402,44 @@ mixin _$ReservaStore on _ReservaStore, Store {
   }
 
   @override
+  dynamic setFidelidade() {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.setFidelidade');
+    try {
+      return super.setFidelidade();
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  double getDesconto() {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.getDesconto');
+    try {
+      return super.getDesconto();
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setModoDePagamento(int value) {
     final _$actionInfo = _$_ReservaStoreActionController.startAction(
         name: '_ReservaStore.setModoDePagamento');
     try {
       return super.setModoDePagamento(value);
+    } finally {
+      _$_ReservaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Map<String, dynamic> getStageFidelidade(int index) {
+    final _$actionInfo = _$_ReservaStoreActionController.startAction(
+        name: '_ReservaStore.getStageFidelidade');
+    try {
+      return super.getStageFidelidade(index);
     } finally {
       _$_ReservaStoreActionController.endAction(_$actionInfo);
     }
@@ -391,6 +454,7 @@ reservasAssento: ${reservasAssento},
 assentosSelecionados: ${assentosSelecionados},
 teste: ${teste},
 assentosReservaAtual: ${assentosReservaAtual},
+fidelidade: ${fidelidade},
 reservasUsuario: ${reservasUsuario},
 grafico: ${grafico},
 quantidade: ${quantidade},
@@ -400,6 +464,7 @@ quantidadeCancelado: ${quantidadeCancelado},
 loading: ${loading},
 loadingPagamento: ${loadingPagamento},
 modoDePagamento: ${modoDePagamento},
+desconto: ${desconto},
 isValid: ${isValid},
 valorTotalReserva: ${valorTotalReserva}
     ''';

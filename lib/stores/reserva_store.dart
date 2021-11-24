@@ -109,6 +109,22 @@ abstract class _ReservaStore with Store {
       var retorno = await reservaRepository.getAllAssentos(id);
       assentosReservaAtual.clear();
       assentosReservaAtual.addAll(retorno);
+      getFidelidade();
+      // loading = false;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @observable
+  int fidelidade = 0;
+
+  Future<void> getFidelidade() async {
+    try {
+      //loading = true;
+      var retorno =
+          await reservaRepository.getFidelidade(usuarioStore.usuario!.id!);
+      fidelidade = retorno;
       // loading = false;
     } catch (e) {
       print(e);
@@ -255,6 +271,63 @@ abstract class _ReservaStore with Store {
   @observable
   int modoDePagamento = 0;
 
+  @observable
+  double desconto = 0;
+
+  @action
+  setFidelidade() => fidelidade = fidelidade + 1;
+  @action
+  double getDesconto() {
+    if (fidelidade >= 10)
+      desconto = 0.03;
+    else if (fidelidade >= 20)
+      desconto = 0.06;
+    else if (fidelidade >= 30)
+      desconto = 0.09;
+    else if (fidelidade >= 40)
+      desconto = 0.12;
+    else if (fidelidade >= 50) desconto = 0.15;
+    return desconto;
+  }
+
   @action
   void setModoDePagamento(int value) => modoDePagamento = value;
+
+  @action
+  Map<String, dynamic> getStageFidelidade(int index) {
+    Map<String, dynamic> retorno = {};
+    switch (index) {
+      case 1:
+        retorno['porBar'] = fidelidade / 10;
+        retorno['porText'] = 3;
+        break;
+      case 2:
+        retorno['porBar'] = (fidelidade - 10) / 10;
+        retorno['porText'] = 6;
+        ;
+        break;
+      case 3:
+        retorno['porBar'] = (fidelidade - 20) / 10;
+        retorno['porText'] = 9;
+        ;
+        break;
+      case 4:
+        retorno['porBar'] = (fidelidade - 30) / 10;
+        retorno['porText'] = 12;
+        ;
+        break;
+      case 5:
+        retorno['porBar'] = (fidelidade - 40) / 10;
+        retorno['porText'] = 15;
+        ;
+        break;
+      default:
+        retorno['porBar'] = (fidelidade - 50) / 10;
+        retorno['porText'] = 5;
+        ;
+    }
+    retorno['porBar'] =
+        retorno['porBar'] <= 0.00000001 ? 0.0000001 : retorno['porBar'];
+    return retorno;
+  }
 }

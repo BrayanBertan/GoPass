@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gopass_app/models/reserva_model.dart';
@@ -111,6 +113,11 @@ class _ReservaPageState extends State<ReservaPage> {
                                     reserva.total_vendido! <
                                         reserva.lotacao_minima!)
                             ? () {
+                                reserva.valor = ((reserva.valor! *
+                                        reserva.qtde_ingressos!) -
+                                    ((reserva.valor! *
+                                            reserva.qtde_ingressos!) *
+                                        reservaStore.getDesconto()));
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -119,14 +126,16 @@ class _ReservaPageState extends State<ReservaPage> {
                                     }).then((value) {
                                   setState(() {
                                     reserva.confirmada = value ?? 0;
-                                    if (reserva.confirmada == 1)
+                                    if (reserva.confirmada == 1) {
+                                      eventoStore.setFidelidade();
                                       reservaStore.updatePagamento(reserva);
+                                    }
                                   });
                                 });
                               }
                             : null,
                         child: Text(
-                          'Pagar R\$${(reserva.valor! * reserva.qtde_ingressos!).toStringAsFixed(2)}',
+                          'Pagar R\$${((reserva.valor! * reserva.qtde_ingressos!) - ((reserva.valor! * reserva.qtde_ingressos!) * reservaStore.getDesconto())).toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -165,10 +174,68 @@ class _ReservaPageState extends State<ReservaPage> {
                                   reserva.confirmada!)['color'],
                           borderRadius: BorderRadius.circular(50)),
                     ),
-                  ),
+                  )
                 ],
               ),
-            )
+            ),
+            const Text('Programa de fidelidade',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                )),
+            LayoutBuilder(
+              builder: (context, constraints) => Container(
+                  padding: EdgeInsets.all(5),
+                  width: double.infinity,
+                  height: 50,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.bottomLeft,
+                                width: constraints.maxWidth * 0.187,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: Colors.black, width: 1)),
+                                child: LayoutBuilder(
+                                  builder: (context, con) {
+                                    return Container(
+                                      width: con.maxWidth *
+                                          reservaStore.getStageFidelidade(
+                                              index + 1)['porBar'],
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                              color: Colors.black, width: 1)),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: constraints.maxWidth * 0.01,
+                              )
+                            ],
+                          ),
+                          Text(
+                              '${reservaStore.getStageFidelidade(index + 1)['porText']}%'),
+                        ],
+                      );
+                    },
+                  )),
+            ),
+            Text(
+                '   *3% de desconto a cada 10 compras. você tem ${reservaStore.fidelidade} compras')
           ],
         ),
       ),
