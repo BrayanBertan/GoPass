@@ -212,12 +212,7 @@ class _ReservaPageState extends State<ReservaPage> {
                                           reservaStore.getStageFidelidade(
                                               index + 1)['porBar'],
                                       height: 20,
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: Colors.black, width: 1)),
+                                      color: Colors.green,
                                     );
                                   },
                                 ),

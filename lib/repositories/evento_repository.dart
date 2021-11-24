@@ -17,19 +17,21 @@ class EventoRepository {
 
   Future<Evento?> getEvento(int id) async {
     Database dbEvento = await br.db;
-    List<Map> maps = await dbEvento.query("eventos", columns: [
-      'id',
-      'categoria_id',
-      'usuario_id',
-      'nome',
-      'descricao',
-      'endereco',
-      'data_evento',
-      'lotacao_minima',
-      'lotacao_maxima',
-      'valor',
-      'foto'
-    ]);
+    List<Map> maps = await dbEvento.query("eventos",
+        columns: [
+          'id',
+          'categoria_id',
+          'usuario_id',
+          'nome',
+          'descricao',
+          'endereco',
+          'data_evento',
+          'lotacao_minima',
+          'lotacao_maxima',
+          'valor',
+          'foto'
+        ],
+        orderBy: "confirmada DESC");
     if (maps.length > 0) {
       return Evento.fromMap(maps.first);
     } else {
@@ -73,7 +75,7 @@ class EventoRepository {
       categorias = categorias.replaceAll("]", ")");
       sql = "$sql AND categoria_id IN $categorias";
     }
-
+    sql = "$sql ORDER BY data_evento DESC";
     List<Map> maps = await dbEvento.rawQuery(sql);
     print('gambiarra $maps');
     List<Evento> listEvento = [];
