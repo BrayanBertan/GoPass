@@ -278,6 +278,7 @@ abstract class _ReservaStore with Store {
   setFidelidade() => fidelidade = fidelidade + 1;
   @action
   double getDesconto() {
+    print(desconto);
     if (fidelidade >= 10)
       desconto = 0.03;
     else if (fidelidade >= 20)

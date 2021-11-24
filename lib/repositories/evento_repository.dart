@@ -31,7 +31,8 @@ class EventoRepository {
           'valor',
           'foto'
         ],
-        orderBy: "confirmada DESC");
+        where: 'id = ?',
+        whereArgs: [id]);
     if (maps.length > 0) {
       return Evento.fromMap(maps.first);
     } else {

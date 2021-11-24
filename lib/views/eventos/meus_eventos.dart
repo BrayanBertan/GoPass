@@ -64,7 +64,7 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                             color: (reservaStore
                                             .reservasUsuario[index].data_evento!
                                             .difference(DateTime.now())
-                                            .inHours <
+                                            .inHours <=
                                         24 &&
                                     reservaStore.reservasUsuario[index]
                                             .total_vendido! <
@@ -86,7 +86,7 @@ class _MeusEventosPageState extends State<MeusEventosPage> {
                                 (reservaStore.reservasUsuario[index]
                                                 .data_evento!
                                                 .difference(DateTime.now())
-                                                .inHours <
+                                                .inHours <=
                                             24 &&
                                         reservaStore.reservasUsuario[index]
                                                 .total_vendido! <

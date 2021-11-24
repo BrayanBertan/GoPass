@@ -44,8 +44,7 @@ class _DialogReservaState extends State<DialogReserva> {
               ElevatedButton(
                   onPressed:
                       (evento.data_evento!.difference(DateTime.now()).inHours >
-                                  24 &&
-                              reserva.total_vendido! < evento.lotacao_minima!)
+                              24)
                           ? () {
                               Modular.to
                                   .pushNamed('/evento-info', arguments: evento);

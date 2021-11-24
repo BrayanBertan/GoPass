@@ -28,6 +28,7 @@ class _ReservaPageState extends State<ReservaPage> {
   @override
   void initState() {
     eventoStore.getAllAssentosReserva(reserva.id!);
+    reservaStore.getDesconto();
     super.initState();
   }
 
@@ -104,20 +105,15 @@ class _ReservaPageState extends State<ReservaPage> {
                         onPressed: (reserva.confirmada == 0 &&
                                     DateTime.now()
                                             .difference(reserva.data_reserva!)
-                                            .inHours <
+                                            .inHours <=
                                         24) &&
                                 !(reserva.data_evento!
                                             .difference(DateTime.now())
-                                            .inHours <
+                                            .inHours <=
                                         24 &&
                                     reserva.total_vendido! <
                                         reserva.lotacao_minima!)
                             ? () {
-                                reserva.valor = ((reserva.valor! *
-                                        reserva.qtde_ingressos!) -
-                                    ((reserva.valor! *
-                                            reserva.qtde_ingressos!) *
-                                        reservaStore.getDesconto()));
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -134,12 +130,16 @@ class _ReservaPageState extends State<ReservaPage> {
                                 });
                               }
                             : null,
-                        child: Text(
-                          'Pagar R\$${((reserva.valor! * reserva.qtde_ingressos!) - ((reserva.valor! * reserva.qtde_ingressos!) * reservaStore.getDesconto())).toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                        child: Observer(
+                          builder: (_) {
+                            return Text(
+                              'Pagar R\$${((reserva.valor! * reserva.qtde_ingressos!) - ((reserva.valor! * reserva.qtde_ingressos!) * reservaStore.desconto)).toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
                       );
                     }),
